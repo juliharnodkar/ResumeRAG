@@ -13,8 +13,9 @@ public final class SkillRegistry {
     static {
         register("Java", "java");
         register("Python", "python");
-        register("C++", "c++");
+        register("C++", "c++", "cpp", "c plus plus");
         register("C", "c");
+        register("C#", "c#", "csharp", "c sharp");
         register("JavaScript", "javascript");
         register("TypeScript", "typescript");
         register("SQL", "sql");
@@ -93,4 +94,6 @@ public final class SkillRegistry {
         return Pattern.compile("(?<![a-z0-9])" + Pattern.quote(alias) + "(?![a-z0-9])");
     }
 }
+
+
 
