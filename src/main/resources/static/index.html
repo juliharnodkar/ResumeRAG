@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ResuMatch — Know how well your resume fits the role</title>
+<title>ResuMatch � Know how well your resume fits the role</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -116,7 +116,7 @@ button {
     backdrop-filter: blur(16px);
 }
 
-.brand {
+\.brand {`r`n    margin-left: -28px;
     display: flex;
     align-items: center;
     gap: 11px;
@@ -963,7 +963,7 @@ button {
 }
 
 .recommendation-list li::before {
-    content: "↗";
+    content: "?";
     color: var(--terracotta);
     font-weight: 800;
     margin-right: 8px;
@@ -1619,7 +1619,7 @@ button {
 }
 
 .recommendation-list li::before {
-    content: "↗";
+    content: "?";
     color: var(--terracotta);
     font-weight: 800;
     margin-right: 8px;
@@ -1903,7 +1903,7 @@ button {
 }
 
 .recommendation-list li::before {
-    content: "↗";
+    content: "?";
     position: absolute;
     left: 14px;
     top: 12px;
@@ -2111,7 +2111,33 @@ button {
         padding: 6px 8px;
     }
 }
-</style></head>
+</style><style id="resumatch-logo-style">
+.resumatch-logo {
+    display: block;
+    width: 210px;`r`n    height: auto;`r`n    max-height: 62px;
+    object-fit: contain;
+}
+</style>
+<style id="resumatch-header-position">
+.header {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+.brand {
+    margin-left: 0 !important;
+    transform: translateX(-6px);
+}
+.resumatch-logo {
+    width: 210px !important;
+    max-height: 62px !important;
+}
+</style>
+<style id="resumatch-header-note-position">
+.header-note {
+    transform: translateX(-18px);
+}
+</style>
+</head>
 
 <body>
 
@@ -2121,12 +2147,7 @@ button {
 <div class="decor decor-two"></div>
 
 <header class="header">
-    <div class="brand">
-        <div class="logo">
-            <div class="logo-paper"></div>
-            <div class="logo-cut"></div>
-        </div>
-        <div class="wordmark">ResuMatch</div>
+    <div class="brand"><img class="resumatch-logo" src="/resumatch-logo.png" alt="ResuMatch">
     </div>
 
     <div class="header-note">
@@ -2143,7 +2164,7 @@ button {
 
         <div class="eyebrow">
             <span class="eyebrow-mark"></span>
-            Resume → role analysis
+            Resume ? role analysis
         </div>
 
         <h1>
@@ -2159,7 +2180,7 @@ button {
 
         <div class="hero-meta">
             <div class="meta-item">
-                <div class="meta-icon">✓</div>
+                <div class="meta-icon">?</div>
                 Skills matched
             </div>
 
@@ -2169,7 +2190,7 @@ button {
             </div>
 
             <div class="meta-item">
-                <div class="meta-icon">↗</div>
+                <div class="meta-icon">?</div>
                 Evidence found
             </div>
         </div>
@@ -2308,7 +2329,7 @@ button {
 
             <div class="upload-zone" id="uploadZone">
 
-                <div class="upload-icon">↑</div>
+                <div class="upload-icon">?</div>
 
                 <div class="upload-title">
                     Drop your resume here
@@ -2372,7 +2393,7 @@ We are looking for a Software Engineer with experience in Java, Spring Boot, RES
                     class="analyze-btn"
                     id="analyzeButton"
                 >
-                    Analyze match →
+                    Analyze match ?
                 </button>
 
             </div>
@@ -2577,7 +2598,7 @@ We are looking for a Software Engineer with experience in Java, Spring Boot, RES
 </main>
 
 <footer class="footer">
-    ResuMatch · Know how well your resume fits the role.
+    ResuMatch � Know how well your resume fits the role.
 </footer>
 
 </div>
@@ -2625,7 +2646,7 @@ resumeInput.addEventListener("change", async function () {
 
         resumeId = data.resumeId;
 
-        fileName.textContent = "✓ " + file.name;
+        fileName.textContent = "? " + file.name;
 
     } catch (error) {
 
@@ -3295,7 +3316,7 @@ function renderResults(data) {
 }
 
 .recommendation-list li::before {
-    content: "↗";
+    content: "?";
     color: var(--terracotta);
     font-weight: 800;
     margin-right: 8px;
@@ -3579,7 +3600,7 @@ function renderResults(data) {
 }
 
 .recommendation-list li::before {
-    content: "↗";
+    content: "?";
     position: absolute;
     left: 14px;
     top: 12px;
@@ -4730,6 +4751,18 @@ function renderResults(data) {
 })();
 </script></body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
