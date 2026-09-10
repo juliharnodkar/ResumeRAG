@@ -1,0 +1,12 @@
+services:
+  pgvector:
+    image: 'pgvector/pgvector:pg17'
+    environment:
+      - 'POSTGRES_DB=resumerag'
+      - 'POSTGRES_PASSWORD=resumerag'
+      - 'POSTGRES_USER=resumerag'
+    labels:
+      - "org.springframework.boot.service-connection=postgres"
+    ports:
+      - '5432'
+

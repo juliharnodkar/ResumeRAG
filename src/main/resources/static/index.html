@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ResumeRAG</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f7f7f7;
+            color: #111;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 180px;
+            padding: 12px;
+            margin-top: 8px;
+            box-sizing: border-box;
+            resize: vertical;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        input[type="file"] {
+            margin: 10px 0 20px;
+        }
+
+        button {
+            padding: 12px 20px;
+            margin-top: 15px;
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+            background: #111;
+            color: white;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background: #333;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-top: 25px;
+            border-radius: 8px;
+        }
+
+        .score {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .skills {
+            line-height: 1.8;
+        }
+
+        .evidence-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .evidence-item:last-child {
+            border-bottom: none;
+        }
+
+        .skill-name {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .evidence-text {
+            color: #555;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        #loading {
+            margin-top: 15px;
+        }
+
+        #results {
+            display: none;
+        }
+
+        #uploadStatus {
+            margin-top: 10px;
+        }
+
+        #analysis {
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
+        #recommendations p {
+            line-height: 1.6;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>ResumeRAG</h1>
+
+
+    <!-- UPLOAD -->
+
+    <div class="card">
+
+        <h2>1. Upload Resume</h2>
+
+        <input id="resume" type="file" accept=".pdf">
+
+        <br>
+
+        <button onclick="uploadResume()">
+            Upload Resume
+        </button>
+
+        <p id="uploadStatus"></p>
+
+    </div>
+
+
+    <!-- JOB DESCRIPTION -->
+
+    <div class="card">
+
+        <h2>2. Job Description</h2>
+
+        <textarea id="jobDescription" placeholder="Paste the job description here..."></textarea>
+
+        <br>
+
+        <button onclick="analyzeResume()">
+            Analyze Resume
+        </button>
+
+        <p id="loading"></p>
+
+    </div>
+
+
+    <!-- RESULTS -->
+
+    <div id="results">
+
+
+        <!-- SCORE -->
+
+        <div class="card">
+
+            <h2>Match Score</h2>
+
+            <div class="score" id="score"></div>
+
+        </div>
+
+
+        <!-- MATCHED SKILLS -->
+
+        <div class="card">
+
+            <h2>Matched Skills</h2>
+
+            <div class="skills" id="matchedSkills"></div>
+
+        </div>
+
+
+        <!-- EVIDENCE -->
+
+        <div class="card">
+
+            <h2>Skill Evidence</h2>
+
+            <div id="skillEvidence"></div>
+
+        </div>
+
+
+        <!-- MISSING -->
+
+        <div class="card">
+
+            <h2>Missing Skills</h2>
+
+            <div class="skills" id="missingSkills"></div>
+
+        </div>
+
+
+        <!-- ANALYSIS -->
+
+        <div class="card">
+
+            <h2>Analysis</h2>
+
+            <div id="analysis"></div>
+
+        </div>
+
+
+        <!-- RECOMMENDATIONS -->
+
+        <div class="card">
+
+            <h2>Recommendations</h2>
+
+            <div id="recommendations"></div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        let resumeId = null;
+
+
+        async function uploadResume() {
+
+            const resume =
+                document
+                    .getElementById("resume")
+                    .files[0];
+
+            const status =
+                document
+                    .getElementById("uploadStatus");
+
+
+            if (!resume) {
+
+                status.textContent =
+                    "Please select a PDF.";
+
+                return;
+            }
+
+
+            status.textContent =
+                "Uploading resume...";
+
+
+            const formData =
+                new FormData();
+
+
+            formData.append(
+                "resume",
+                resume
+            );
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/resume/upload",
+                        {
+                            method: "POST",
+                            body: formData
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.error ||
+                        "Upload failed."
+                    );
+                }
+
+
+                resumeId =
+                    data.resumeId;
+
+
+                status.textContent =
+                    "Resume uploaded successfully.";
+
+            } catch (error) {
+
+                status.textContent =
+                    "Error: " +
+                    error.message;
+            }
+        }
+
+
+
+        async function analyzeResume() {
+
+            const jobDescription =
+                document
+                    .getElementById("jobDescription")
+                    .value
+                    .trim();
+
+
+            const loading =
+                document
+                    .getElementById("loading");
+
+
+            if (!resumeId) {
+
+                loading.textContent =
+                    "Please upload your resume first.";
+
+                return;
+            }
+
+
+            if (!jobDescription) {
+
+                loading.textContent =
+                    "Please enter a job description.";
+
+                return;
+            }
+
+
+            loading.textContent =
+                "Analyzing resume...";
+
+
+            document
+                .getElementById("results")
+                .style.display = "none";
+
+
+            const formData =
+                new FormData();
+
+
+            formData.append(
+                "resumeId",
+                resumeId
+            );
+
+
+            formData.append(
+                "jobDescription",
+                jobDescription
+            );
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/analyze",
+                        {
+                            method: "POST",
+                            body: formData
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.error ||
+                        "Analysis failed."
+                    );
+                }
+
+
+                /*
+                 * MATCH SCORE
+                 */
+
+                document
+                    .getElementById("score")
+                    .textContent =
+                    data.score + "%";
+
+
+                /*
+                 * MATCHED SKILLS
+                 */
+
+                document
+                    .getElementById("matchedSkills")
+                    .textContent =
+                    data.matchedSkills.length
+                        ? data.matchedSkills.join(" • ")
+                        : "None";
+
+
+                /*
+                 * MISSING SKILLS
+                 */
+
+                document
+                    .getElementById("missingSkills")
+                    .textContent =
+                    data.missingSkills.length
+                        ? data.missingSkills.join(" • ")
+                        : "None";
+
+
+                /*
+                 * SKILL EVIDENCE
+                 *
+                 * Only show the first 8 matched skills.
+                 */
+
+                const evidenceContainer =
+                    document.getElementById(
+                        "skillEvidence"
+                    );
+
+
+                if (
+                    data.skillDetails &&
+                    data.skillDetails.length
+                ) {
+
+                    const matchedEvidence =
+                        data.skillDetails
+                            .filter(
+                                skill => skill.matched
+                            )
+                            .slice(0, 8);
+
+
+                    if (matchedEvidence.length) {
+
+                        evidenceContainer.innerHTML =
+                            matchedEvidence
+                                .map(skill => {
+
+                                    const evidence =
+                                        skill.evidence &&
+                                            skill.evidence.length
+                                            ? skill.evidence[0]
+                                            : "Mentioned in resume.";
+
+
+                                    return `
+                                <div class="evidence-item">
+
+                                    <div class="skill-name">
+                                        ${escapeHtml(skill.skill)}
+                                    </div>
+
+                                    <div class="evidence-text">
+                                        ${escapeHtml(cleanEvidence(evidence))}
+                                    </div>
+
+                                </div>
+                            `;
+
+                                })
+                                .join("");
+
+                    } else {
+
+                        evidenceContainer.textContent =
+                            "No evidence found.";
+                    }
+
+                } else {
+
+                    evidenceContainer.textContent =
+                        "No evidence found.";
+                }
+
+
+                /*
+                 * ANALYSIS
+                 */
+
+                document
+                    .getElementById("analysis")
+                    .textContent =
+                    data.analysis ||
+                    "No analysis available.";
+
+
+                /*
+                 * RECOMMENDATIONS
+                 */
+
+                const recommendationContainer =
+                    document.getElementById(
+                        "recommendations"
+                    );
+
+
+                if (
+                    data.recommendations &&
+                    data.recommendations.length
+                ) {
+
+                    recommendationContainer.innerHTML =
+                        data.recommendations
+                            .map(
+                                item =>
+                                    `<p>• ${escapeHtml(item)}</p>`
+                            )
+                            .join("");
+
+                } else {
+
+                    recommendationContainer.textContent =
+                        "No recommendations.";
+                }
+
+
+                /*
+                 * SHOW RESULTS
+                 */
+
+                document
+                    .getElementById("results")
+                    .style.display =
+                    "block";
+
+
+                loading.textContent =
+                    "Analysis complete.";
+
+
+            } catch (error) {
+
+                loading.textContent =
+                    "Error: " +
+                    error.message;
+            }
+        }
+
+
+
+        function cleanEvidence(text) {
+
+            let cleaned =
+                String(text);
+
+
+            /*
+             * Remove leading/trailing ellipsis.
+             */
+
+            cleaned =
+                cleaned
+                    .replace(/^(\.\.\.\s*)+/, "")
+                    .replace(/(\s*\.\.\.)+$/, "")
+                    .trim();
+
+
+            /*
+             * Keep evidence compact.
+             */
+
+            if (cleaned.length > 140) {
+
+                cleaned =
+                    cleaned.substring(0, 140).trim()
+                    + "...";
+            }
+
+
+            return cleaned;
+        }
+
+
+
+        function escapeHtml(value) {
+
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+    </script>
+
+</body>
+
+</html>
