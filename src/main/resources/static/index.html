@@ -1744,6 +1744,296 @@ button {
         grid-template-columns: 1fr;
     }
 }
+
+/* =========================================================
+   FINAL RESULT DETAIL REDESIGN
+   ========================================================= */
+
+.result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 18px;
+}
+
+.result-card {
+    min-height: 265px;
+    padding: 27px;
+    position: relative;
+    overflow: hidden;
+}
+
+.result-card::after {
+    content: "";
+    position: absolute;
+    width: 110px;
+    height: 110px;
+    border: 1px solid rgba(114,105,181,.10);
+    border-radius: 50%;
+    right: -45px;
+    bottom: -48px;
+}
+
+.result-card-heading {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    margin-bottom: 22px;
+    position: relative;
+    z-index: 1;
+}
+
+.result-number {
+    width: 31px;
+    height: 31px;
+    flex: none;
+    display: grid;
+    place-items: center;
+    border-radius: 9px;
+    background: var(--violet-light);
+    color: var(--violet);
+    font-size: 9px;
+    font-weight: 800;
+}
+
+.result-card-label {
+    color: var(--terracotta);
+    font-size: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.3px;
+    margin-bottom: 4px;
+}
+
+.result-card h3 {
+    margin: 0;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 16px;
+    letter-spacing: -.4px;
+}
+
+/* ANALYSIS SECTIONS */
+
+.analysis-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.analysis-block {
+    position: relative;
+    padding: 11px 13px 11px 15px;
+    border-radius: 10px;
+    background: #faf8f4;
+    border: 1px solid var(--line);
+    overflow: hidden;
+}
+
+.analysis-block::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--violet);
+}
+
+.analysis-block.gap::before {
+    background: var(--terracotta);
+}
+
+.analysis-block.next::before {
+    background: var(--sage);
+}
+
+.analysis-block-title {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--plum);
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    margin-bottom: 5px;
+}
+
+.analysis-block-title span {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--violet);
+}
+
+.analysis-block.gap .analysis-block-title span {
+    background: var(--terracotta);
+}
+
+.analysis-block.next .analysis-block-title span {
+    background: var(--sage);
+}
+
+.analysis-block-text {
+    color: var(--plum-soft);
+    font-size: 10px;
+    line-height: 1.55;
+}
+
+/* RECOMMENDATION ITEMS */
+
+.recommendation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.recommendation-list li {
+    position: relative;
+    padding: 12px 13px 12px 39px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #faf8f4;
+    color: var(--plum-soft);
+    font-size: 10px;
+    line-height: 1.55;
+}
+
+.recommendation-list li::before {
+    content: "↗";
+    position: absolute;
+    left: 14px;
+    top: 12px;
+    width: 17px;
+    height: 17px;
+    display: grid;
+    place-items: center;
+    border-radius: 5px;
+    background: var(--terracotta-light);
+    color: var(--terracotta);
+    font-size: 9px;
+    font-weight: 800;
+    margin: 0;
+}
+
+/* EVIDENCE */
+
+.evidence-card {
+    margin-top: 18px;
+    padding: 27px;
+}
+
+.evidence-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    margin-bottom: 19px;
+}
+
+.evidence-heading h3 {
+    margin: 0;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 16px;
+    letter-spacing: -.4px;
+}
+
+.evidence-note {
+    color: var(--sage);
+    background: var(--sage-light);
+    padding: 7px 10px;
+    border-radius: 7px;
+    font-size: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+}
+
+.evidence-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.evidence-item {
+    min-height: 105px;
+    padding: 14px;
+    border-radius: 11px;
+    border: 1px solid var(--line);
+    background:
+        linear-gradient(
+            135deg,
+            #faf8f4 0%,
+            #f7f4ee 100%
+        );
+    position: relative;
+}
+
+.evidence-index {
+    color: #b4adb5;
+    font-size: 8px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.evidence-skill {
+    color: var(--violet);
+    font-size: 11px;
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+
+.evidence-source {
+    color: var(--sage);
+    font-size: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    margin-bottom: 6px;
+}
+
+.evidence-text {
+    color: var(--muted);
+    font-size: 9px;
+    line-height: 1.45;
+}
+
+.evidence-empty {
+    grid-column: 1 / -1;
+    padding: 20px;
+    border-radius: 10px;
+    background: #faf8f4;
+    color: var(--muted);
+    font-size: 10px;
+    text-align: center;
+}
+
+@media (max-width: 1050px) {
+    .evidence-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .result-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .evidence-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .evidence-heading {
+        display: block;
+    }
+
+    .evidence-note {
+        display: inline-block;
+        margin-top: 10px;
+    }
+}
 </style>
 </head>
 
@@ -3054,6 +3344,296 @@ function renderResults(data) {
         grid-template-columns: 1fr;
     }
 }
+
+/* =========================================================
+   FINAL RESULT DETAIL REDESIGN
+   ========================================================= */
+
+.result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 18px;
+}
+
+.result-card {
+    min-height: 265px;
+    padding: 27px;
+    position: relative;
+    overflow: hidden;
+}
+
+.result-card::after {
+    content: "";
+    position: absolute;
+    width: 110px;
+    height: 110px;
+    border: 1px solid rgba(114,105,181,.10);
+    border-radius: 50%;
+    right: -45px;
+    bottom: -48px;
+}
+
+.result-card-heading {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    margin-bottom: 22px;
+    position: relative;
+    z-index: 1;
+}
+
+.result-number {
+    width: 31px;
+    height: 31px;
+    flex: none;
+    display: grid;
+    place-items: center;
+    border-radius: 9px;
+    background: var(--violet-light);
+    color: var(--violet);
+    font-size: 9px;
+    font-weight: 800;
+}
+
+.result-card-label {
+    color: var(--terracotta);
+    font-size: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.3px;
+    margin-bottom: 4px;
+}
+
+.result-card h3 {
+    margin: 0;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 16px;
+    letter-spacing: -.4px;
+}
+
+/* ANALYSIS SECTIONS */
+
+.analysis-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.analysis-block {
+    position: relative;
+    padding: 11px 13px 11px 15px;
+    border-radius: 10px;
+    background: #faf8f4;
+    border: 1px solid var(--line);
+    overflow: hidden;
+}
+
+.analysis-block::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--violet);
+}
+
+.analysis-block.gap::before {
+    background: var(--terracotta);
+}
+
+.analysis-block.next::before {
+    background: var(--sage);
+}
+
+.analysis-block-title {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--plum);
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    margin-bottom: 5px;
+}
+
+.analysis-block-title span {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--violet);
+}
+
+.analysis-block.gap .analysis-block-title span {
+    background: var(--terracotta);
+}
+
+.analysis-block.next .analysis-block-title span {
+    background: var(--sage);
+}
+
+.analysis-block-text {
+    color: var(--plum-soft);
+    font-size: 10px;
+    line-height: 1.55;
+}
+
+/* RECOMMENDATION ITEMS */
+
+.recommendation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.recommendation-list li {
+    position: relative;
+    padding: 12px 13px 12px 39px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #faf8f4;
+    color: var(--plum-soft);
+    font-size: 10px;
+    line-height: 1.55;
+}
+
+.recommendation-list li::before {
+    content: "↗";
+    position: absolute;
+    left: 14px;
+    top: 12px;
+    width: 17px;
+    height: 17px;
+    display: grid;
+    place-items: center;
+    border-radius: 5px;
+    background: var(--terracotta-light);
+    color: var(--terracotta);
+    font-size: 9px;
+    font-weight: 800;
+    margin: 0;
+}
+
+/* EVIDENCE */
+
+.evidence-card {
+    margin-top: 18px;
+    padding: 27px;
+}
+
+.evidence-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    margin-bottom: 19px;
+}
+
+.evidence-heading h3 {
+    margin: 0;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 16px;
+    letter-spacing: -.4px;
+}
+
+.evidence-note {
+    color: var(--sage);
+    background: var(--sage-light);
+    padding: 7px 10px;
+    border-radius: 7px;
+    font-size: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+}
+
+.evidence-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.evidence-item {
+    min-height: 105px;
+    padding: 14px;
+    border-radius: 11px;
+    border: 1px solid var(--line);
+    background:
+        linear-gradient(
+            135deg,
+            #faf8f4 0%,
+            #f7f4ee 100%
+        );
+    position: relative;
+}
+
+.evidence-index {
+    color: #b4adb5;
+    font-size: 8px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.evidence-skill {
+    color: var(--violet);
+    font-size: 11px;
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+
+.evidence-source {
+    color: var(--sage);
+    font-size: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    margin-bottom: 6px;
+}
+
+.evidence-text {
+    color: var(--muted);
+    font-size: 9px;
+    line-height: 1.45;
+}
+
+.evidence-empty {
+    grid-column: 1 / -1;
+    padding: 20px;
+    border-radius: 10px;
+    background: #faf8f4;
+    color: var(--muted);
+    font-size: 10px;
+    text-align: center;
+}
+
+@media (max-width: 1050px) {
+    .evidence-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .result-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .evidence-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .evidence-heading {
+        display: block;
+    }
+
+    .evidence-note {
+        display: inline-block;
+        margin-top: 10px;
+    }
+}
 </style>
 
 <script>
@@ -3130,8 +3710,597 @@ function renderResults(data) {
 
 })();
 </script>
+<script>
+(function () {
+
+    function cleanText(value) {
+        if (value === null || value === undefined) {
+            return "";
+        }
+
+        if (typeof value === "string") {
+            return value.trim();
+        }
+
+        return "";
+    }
+
+    function getObjectText(obj) {
+
+        if (!obj || typeof obj !== "object") {
+            return "";
+        }
+
+        const possibleFields = [
+            "evidence",
+            "text",
+            "content",
+            "snippet",
+            "description",
+            "chunk"
+        ];
+
+        for (const field of possibleFields) {
+
+            const value = obj[field];
+
+            if (typeof value === "string" && value.trim()) {
+                return value.trim();
+            }
+        }
+
+        if (obj.document && typeof obj.document === "object") {
+
+            for (const field of possibleFields) {
+
+                const value = obj.document[field];
+
+                if (typeof value === "string" && value.trim()) {
+                    return value.trim();
+                }
+            }
+        }
+
+        return "";
+    }
+
+    function getObjectSection(obj) {
+
+        if (!obj || typeof obj !== "object") {
+            return "";
+        }
+
+        if (typeof obj.section === "string") {
+            return obj.section;
+        }
+
+        if (obj.metadata && typeof obj.metadata === "object") {
+
+            const section =
+                obj.metadata.section ||
+                obj.metadata.source ||
+                obj.metadata.type;
+
+            if (typeof section === "string") {
+                return section;
+            }
+        }
+
+        if (obj.document &&
+            typeof obj.document === "object" &&
+            obj.document.metadata) {
+
+            const section =
+                obj.document.metadata.section ||
+                obj.document.metadata.source ||
+                obj.document.metadata.type;
+
+            if (typeof section === "string") {
+                return section;
+            }
+        }
+
+        return "";
+    }
+
+    function normalizeEvidence(details) {
+
+        const output = [];
+
+        if (!details) {
+            return output;
+        }
+
+        if (Array.isArray(details)) {
+
+            details.forEach(function (item) {
+
+                if (!item || typeof item !== "object") {
+                    return;
+                }
+
+                const skill =
+                    item.skill ||
+                    item.name ||
+                    item.key ||
+                    item.requirement ||
+                    "";
+
+                const evidence =
+                    getObjectText(item);
+
+                const section =
+                    getObjectSection(item);
+
+                if (skill) {
+                    output.push({
+                        skill: String(skill),
+                        evidence: evidence,
+                        section: section
+                    });
+                }
+
+            });
+
+            return output.slice(0, 8);
+        }
+
+        if (typeof details === "object") {
+
+            Object.entries(details).forEach(function ([key, value]) {
+
+                if (value &&
+                    typeof value === "object" &&
+                    !Array.isArray(value)) {
+
+                    output.push({
+                        skill: String(
+                            value.skill ||
+                            value.name ||
+                            key
+                        ),
+                        evidence: getObjectText(value),
+                        section: getObjectSection(value)
+                    });
+
+                } else {
+
+                    output.push({
+                        skill: String(key),
+                        evidence: cleanText(value),
+                        section: ""
+                    });
+
+                }
+
+            });
+
+        }
+
+        return output.slice(0, 8);
+    }
+
+    function parseAnalysis(text) {
+
+        const source = String(text || "");
+
+        const summaryMatch =
+            source.match(
+                /1\.\s*MATCH SUMMARY([\s\S]*?)(?=2\.\s*GAPS|$)/i
+            );
+
+        const gapsMatch =
+            source.match(
+                /2\.\s*GAPS([\s\S]*?)(?=3\.\s*RECOMMENDATIONS|$)/i
+            );
+
+        const recommendationsMatch =
+            source.match(
+                /3\.\s*RECOMMENDATIONS([\s\S]*)/i
+            );
+
+        return {
+            summary:
+                summaryMatch
+                    ? summaryMatch[1].trim()
+                    : "The analysis did not return a match summary.",
+
+            gaps:
+                gapsMatch
+                    ? gapsMatch[1].trim()
+                    : "No specific skill gaps were identified.",
+
+            recommendations:
+                recommendationsMatch
+                    ? recommendationsMatch[1].trim()
+                    : "No additional recommendations were returned."
+        };
+    }
+
+    function renderStructuredAnalysis(text) {
+
+        const container =
+            document.getElementById("analysis");
+
+        if (!container) {
+            return;
+        }
+
+        const parsed = parseAnalysis(text);
+
+        container.innerHTML = "";
+
+        const wrapper =
+            document.createElement("div");
+
+        wrapper.className = "analysis-sections";
+
+        const sections = [
+            {
+                title: "Match summary",
+                text: parsed.summary,
+                className: ""
+            },
+            {
+                title: "Gaps",
+                text: parsed.gaps,
+                className: "gap"
+            },
+            {
+                title: "Next move",
+                text: parsed.recommendations,
+                className: "next"
+            }
+        ];
+
+        sections.forEach(function (section) {
+
+            const block =
+                document.createElement("div");
+
+            block.className =
+                "analysis-block " + section.className;
+
+            const title =
+                document.createElement("div");
+
+            title.className =
+                "analysis-block-title";
+
+            const dot =
+                document.createElement("span");
+
+            const titleText =
+                document.createTextNode(section.title);
+
+            title.appendChild(dot);
+            title.appendChild(titleText);
+
+            const body =
+                document.createElement("div");
+
+            body.className =
+                "analysis-block-text";
+
+            body.textContent =
+                section.text;
+
+            block.appendChild(title);
+            block.appendChild(body);
+
+            wrapper.appendChild(block);
+
+        });
+
+        container.appendChild(wrapper);
+    }
+
+    function recommendationForSkill(skill) {
+
+        const normalized =
+            String(skill || "").toLowerCase();
+
+        if (normalized.includes("spring boot")) {
+            return "If you have Spring Boot experience, surface the project or backend work where you used it and mention the framework explicitly.";
+        }
+
+        if (normalized.includes("postgres")) {
+            return "If you have PostgreSQL experience, make the database work visible by naming PostgreSQL alongside the relevant project, schema, or queries.";
+        }
+
+        if (normalized.includes("rest")) {
+            return "If you have built REST APIs, explicitly mention the endpoints, backend service, or integration work in the relevant project.";
+        }
+
+        if (normalized.includes("kubernetes")) {
+            return "If you have Kubernetes experience, identify the deployment, container orchestration, or infrastructure work where you used it.";
+        }
+
+        if (normalized.includes("aws")) {
+            return "If you have AWS experience, name the specific service and describe what you deployed or managed with it.";
+        }
+
+        if (normalized.includes("docker")) {
+            return "If you have Docker experience, connect it to a project and briefly state how you used containers.";
+        }
+
+        if (normalized.includes("typescript")) {
+            return "If you have TypeScript experience, make it explicit in the project where you used it rather than relying only on the general skills list.";
+        }
+
+        return "If you genuinely have experience with " +
+            skill +
+            ", add a concise, verifiable example of where you used it.";
+    }
+
+    function renderRecommendations(missingSkills, backendRecommendations) {
+
+        const container =
+            document.getElementById("recommendations");
+
+        if (!container) {
+            return;
+        }
+
+        container.innerHTML = "";
+
+        const skills =
+            Array.isArray(missingSkills)
+                ? missingSkills
+                : [];
+
+        if (skills.length === 0) {
+
+            const li =
+                document.createElement("li");
+
+            li.textContent =
+                "Your resume covers the recognized requirements. Focus on making the strongest evidence easy to find.";
+
+            container.appendChild(li);
+
+            return;
+        }
+
+        skills.forEach(function (skill) {
+
+            const li =
+                document.createElement("li");
+
+            li.textContent =
+                recommendationForSkill(skill);
+
+            container.appendChild(li);
+
+        });
+    }
+
+    function renderEvidence(details) {
+
+        const container =
+            document.getElementById("skillEvidence");
+
+        if (!container) {
+            return;
+        }
+
+        container.innerHTML = "";
+
+        const evidence =
+            normalizeEvidence(details);
+
+        if (evidence.length === 0) {
+
+            const empty =
+                document.createElement("div");
+
+            empty.className =
+                "evidence-empty";
+
+            empty.textContent =
+                "No individual evidence signals were returned.";
+
+            container.appendChild(empty);
+
+            return;
+        }
+
+        evidence.forEach(function (item, index) {
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "evidence-item";
+
+            const number =
+                document.createElement("div");
+
+            number.className =
+                "evidence-index";
+
+            number.textContent =
+                String(index + 1).padStart(2, "0");
+
+            const skill =
+                document.createElement("div");
+
+            skill.className =
+                "evidence-skill";
+
+            skill.textContent =
+                item.skill;
+
+            const source =
+                document.createElement("div");
+
+            source.className =
+                "evidence-source";
+
+            source.textContent =
+                item.section || "Resume evidence";
+
+            const text =
+                document.createElement("div");
+
+            text.className =
+                "evidence-text";
+
+            text.textContent =
+                item.evidence ||
+                "Verified evidence for this matched skill.";
+
+            card.appendChild(number);
+            card.appendChild(skill);
+            card.appendChild(source);
+            card.appendChild(text);
+
+            container.appendChild(card);
+
+        });
+    }
+
+    /*
+     * Replace the original renderer with the improved
+     * result renderer.
+     */
+    window.renderResults = function (data) {
+
+        const score =
+            Number(data.score || 0);
+
+        const scoreElement =
+            document.getElementById("score");
+
+        if (scoreElement) {
+            scoreElement.textContent = score;
+        }
+
+        const degrees =
+            Math.max(0, Math.min(100, score)) * 3.6;
+
+        const ring =
+            document.getElementById("scoreRing");
+
+        if (ring) {
+
+            ring.style.background =
+                "conic-gradient(" +
+                "var(--violet) " +
+                degrees +
+                "deg, " +
+                "#e5e0d9 " +
+                degrees +
+                "deg)";
+        }
+
+        const coverage =
+            document.getElementById("coverageFill");
+
+        if (coverage) {
+            coverage.style.width =
+                Math.max(0, Math.min(100, score)) + "%";
+        }
+
+        const matched =
+            Array.isArray(data.matchedSkills)
+                ? data.matchedSkills
+                : [];
+
+        const missing =
+            Array.isArray(data.missingSkills)
+                ? data.missingSkills
+                : [];
+
+        const matchedCount =
+            document.getElementById("matchedCount");
+
+        if (matchedCount) {
+            matchedCount.textContent =
+                matched.length;
+        }
+
+        const matchedContainer =
+            document.getElementById("matchedSkills");
+
+        if (matchedContainer) {
+
+            matchedContainer.innerHTML = "";
+
+            matched.forEach(function (skill) {
+
+                const pill =
+                    document.createElement("span");
+
+                pill.className =
+                    "skill-pill matched";
+
+                pill.textContent =
+                    skill;
+
+                matchedContainer.appendChild(pill);
+
+            });
+        }
+
+        const missingContainer =
+            document.getElementById("missingSkills");
+
+        if (missingContainer) {
+
+            missingContainer.innerHTML = "";
+
+            missing.forEach(function (skill) {
+
+                const pill =
+                    document.createElement("span");
+
+                pill.className =
+                    "skill-pill missing";
+
+                pill.textContent =
+                    skill;
+
+                missingContainer.appendChild(pill);
+
+            });
+        }
+
+        renderStructuredAnalysis(data.analysis);
+
+        renderRecommendations(
+            missing,
+            data.recommendations
+        );
+
+        renderEvidence(data.skillDetails);
+
+        const resultSection =
+            document.getElementById("results");
+
+        if (resultSection) {
+            resultSection.classList.add("active");
+        }
+
+        setTimeout(function () {
+
+            if (resultSection) {
+
+                resultSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+
+            }
+
+        }, 100);
+    };
+
+})();
+</script>
 </body>
 </html>
+
 
 
 
