@@ -2478,11 +2478,11 @@ We are looking for a Software Engineer with experience in Java, Spring Boot, RES
                     Resume evidence
                 </div>
 
-                <h3>Why these skills were matched</h3>
+                <h3>Top 8 resume evidence</h3>
             </div>
 
             <div class="evidence-note">
-                Verified from your resume
+                Top matched skills
             </div>
 
         </div>
@@ -3803,6 +3803,198 @@ function renderResults(data) {
         return "";
     }
 
+    function findEvidenceText(value, depth) {
+
+        if (depth > 5 || value === null || value === undefined) {
+            return "";
+        }
+
+        if (typeof value === "string") {
+            const text = value.trim();
+
+            if (
+                text &&
+                text !== "[object Object]" &&
+                text.length > 2
+            ) {
+                return text;
+            }
+
+            return "";
+        }
+
+        if (Array.isArray(value)) {
+
+            for (const item of value) {
+
+                const found =
+                    findEvidenceText(item, depth + 1);
+
+                if (found) {
+                    return found;
+                }
+            }
+
+            return "";
+        }
+
+        if (typeof value === "object") {
+
+            const preferredFields = [
+                "evidence",
+                "text",
+                "content",
+                "snippet",
+                "chunk",
+                "pageContent",
+                "description",
+                "value"
+            ];
+
+            for (const field of preferredFields) {
+
+                if (value[field] !== undefined) {
+
+                    const found =
+                        findEvidenceText(
+                            value[field],
+                            depth + 1
+                        );
+
+                    if (found) {
+                        return found;
+                    }
+                }
+            }
+
+            for (const key of Object.keys(value)) {
+
+                if (
+                    key === "score" ||
+                    key === "distance" ||
+                    key === "metadata" ||
+                    key === "section"
+                ) {
+                    continue;
+                }
+
+                const found =
+                    findEvidenceText(
+                        value[key],
+                        depth + 1
+                    );
+
+                if (found) {
+                    return found;
+                }
+            }
+        }
+
+        return "";
+    }
+
+    function findEvidenceSection(value, depth) {
+
+        if (depth > 5 || value === null || value === undefined) {
+            return "";
+        }
+
+        if (Array.isArray(value)) {
+
+            for (const item of value) {
+
+                const found =
+                    findEvidenceSection(
+                        item,
+                        depth + 1
+                    );
+
+                if (found) {
+                    return found;
+                }
+            }
+
+            return "";
+        }
+
+        if (typeof value !== "object") {
+            return "";
+        }
+
+        const sectionFields = [
+            "section",
+            "resumeSection",
+            "sourceSection",
+            "category"
+        ];
+
+        for (const field of sectionFields) {
+
+            if (
+                typeof value[field] === "string" &&
+                value[field].trim()
+            ) {
+                return value[field].trim();
+            }
+        }
+
+        if (value.metadata &&
+            typeof value.metadata === "object") {
+
+            const metadataSection =
+                findEvidenceSection(
+                    value.metadata,
+                    depth + 1
+                );
+
+            if (metadataSection) {
+                return metadataSection;
+            }
+        }
+
+        if (value.document &&
+            typeof value.document === "object") {
+
+            const documentSection =
+                findEvidenceSection(
+                    value.document,
+                    depth + 1
+                );
+
+            if (documentSection) {
+                return documentSection;
+            }
+        }
+
+        return "";
+    }
+
+    function findEvidenceSkill(value, fallback) {
+
+        if (!value || typeof value !== "object") {
+            return fallback;
+        }
+
+        const fields = [
+            "skill",
+            "name",
+            "key",
+            "requirement"
+        ];
+
+        for (const field of fields) {
+
+            if (
+                typeof value[field] === "string" &&
+                value[field].trim()
+            ) {
+                return value[field].trim();
+            }
+        }
+
+        return fallback;
+    }
+
     function normalizeEvidence(details) {
 
         const output = [];
@@ -3815,30 +4007,29 @@ function renderResults(data) {
 
             details.forEach(function (item) {
 
-                if (!item || typeof item !== "object") {
+                const skill =
+                    findEvidenceSkill(
+                        item,
+                        ""
+                    );
+
+                if (!skill) {
                     return;
                 }
 
-                const skill =
-                    item.skill ||
-                    item.name ||
-                    item.key ||
-                    item.requirement ||
-                    "";
-
-                const evidence =
-                    getObjectText(item);
-
-                const section =
-                    getObjectSection(item);
-
-                if (skill) {
-                    output.push({
-                        skill: String(skill),
-                        evidence: evidence,
-                        section: section
-                    });
-                }
+                output.push({
+                    skill: skill,
+                    evidence:
+                        findEvidenceText(
+                            item,
+                            0
+                        ),
+                    section:
+                        findEvidenceSection(
+                            item,
+                            0
+                        )
+                });
 
             });
 
@@ -3847,39 +4038,121 @@ function renderResults(data) {
 
         if (typeof details === "object") {
 
-            Object.entries(details).forEach(function ([key, value]) {
+            Object.entries(details).forEach(
+                function ([key, value]) {
 
-                if (value &&
-                    typeof value === "object" &&
-                    !Array.isArray(value)) {
-
-                    output.push({
-                        skill: String(
-                            value.skill ||
-                            value.name ||
+                    const skill =
+                        findEvidenceSkill(
+                            value,
                             key
-                        ),
-                        evidence: getObjectText(value),
-                        section: getObjectSection(value)
-                    });
-
-                } else {
+                        );
 
                     output.push({
-                        skill: String(key),
-                        evidence: cleanText(value),
-                        section: ""
+                        skill: skill,
+                        evidence:
+                            findEvidenceText(
+                                value,
+                                0
+                            ),
+                        section:
+                            findEvidenceSection(
+                                value,
+                                0
+                            )
                     });
 
                 }
-
-            });
-
+            );
         }
 
         return output.slice(0, 8);
     }
 
+    function renderEvidence(details) {
+
+        const container =
+            document.getElementById("skillEvidence");
+
+        if (!container) {
+            return;
+        }
+
+        container.innerHTML = "";
+
+        const evidence =
+            normalizeEvidence(details);
+
+        if (evidence.length === 0) {
+
+            const empty =
+                document.createElement("div");
+
+            empty.className =
+                "evidence-empty";
+
+            empty.textContent =
+                "No individual resume evidence was returned.";
+
+            container.appendChild(empty);
+
+            return;
+        }
+
+        evidence.forEach(function (item, index) {
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "evidence-item";
+
+            const number =
+                document.createElement("div");
+
+            number.className =
+                "evidence-index";
+
+            number.textContent =
+                String(index + 1).padStart(2, "0");
+
+            const skill =
+                document.createElement("div");
+
+            skill.className =
+                "evidence-skill";
+
+            skill.textContent =
+                item.skill;
+
+            const source =
+                document.createElement("div");
+
+            source.className =
+                "evidence-source";
+
+            source.textContent =
+                item.section ||
+                "Resume evidence";
+
+            const text =
+                document.createElement("div");
+
+            text.className =
+                "evidence-text";
+
+            text.textContent =
+                item.evidence ||
+                "This skill was verified from resume content.";
+
+            card.appendChild(number);
+            card.appendChild(skill);
+            card.appendChild(source);
+            card.appendChild(text);
+
+            container.appendChild(card);
+
+        });
+    }
     function parseAnalysis(text) {
 
         const source = String(text || "");
@@ -4300,6 +4573,7 @@ function renderResults(data) {
 </script>
 </body>
 </html>
+
 
 
 
