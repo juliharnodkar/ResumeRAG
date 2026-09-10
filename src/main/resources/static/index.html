@@ -2035,7 +2035,83 @@ button {
     }
 }
 </style>
-</head>
+<style id="resumatch-analysis-skill-style">
+.analysis-skill-label {
+    display: block;
+    margin-bottom: 11px;
+    color: #625a70;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.analysis-skill-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    padding: 13px;
+    margin-top: 2px;
+    border-radius: 13px;
+    background: rgba(255,255,255,.62);
+    border: 1px solid rgba(54,42,70,.10);
+}
+
+.analysis-skill-token {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 10px;
+    border-radius: 8px;
+    font-family: "SFMono-Regular","Cascadia Code","Roboto Mono",Consolas,monospace;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -.01em;
+    white-space: nowrap;
+}
+
+.analysis-skill-token::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    margin-right: 7px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: .6;
+}
+
+.analysis-skill-box.matched {
+    background: rgba(116,103,190,.045);
+    border-color: rgba(116,103,190,.13);
+}
+
+.analysis-skill-box.matched .analysis-skill-token {
+    color: #51477f;
+    background: #f1eefb;
+    border: 1px solid #ded8f2;
+}
+
+.analysis-skill-box.missing {
+    background: rgba(203,111,87,.04);
+    border-color: rgba(203,111,87,.14);
+}
+
+.analysis-skill-box.missing .analysis-skill-token {
+    color: #a45140;
+    background: #faeee9;
+    border: 1px solid #ecd3cb;
+}
+
+@media (max-width: 600px) {
+    .analysis-skill-box {
+        gap: 6px;
+        padding: 10px;
+    }
+
+    .analysis-skill-token {
+        font-size: 10px;
+        padding: 6px 8px;
+    }
+}
+</style></head>
 
 <body>
 
@@ -4571,8 +4647,91 @@ function renderResults(data) {
 
 })();
 </script>
-</body>
+<script id="resumatch-analysis-skill-script">
+(function () {
+    function enhanceSkillText() {
+        const candidates = document.querySelectorAll(
+            ".analysis-sections p, .analysis-sections div, .analysis-sections span"
+        );
+
+        candidates.forEach(function (el) {
+            if (el.dataset.skillEnhanced === "true") return;
+            if (el.children.length > 0) return;
+
+            const text = el.textContent.trim();
+
+            let label = null;
+            let type = null;
+            let skillsText = null;
+
+            if (text.startsWith("Verified matched skills:")) {
+                label = "Verified matched skills";
+                type = "matched";
+                skillsText = text.substring("Verified matched skills:".length).trim();
+            } else if (text.startsWith("Missing verified skills:")) {
+                label = "Missing verified skills";
+                type = "missing";
+                skillsText = text.substring("Missing verified skills:".length).trim();
+            }
+
+            if (!label || !skillsText) return;
+
+            const skills = skillsText
+                .split(",")
+                .map(function (skill) {
+                    return skill.trim();
+                })
+                .filter(Boolean);
+
+            if (!skills.length) return;
+
+            const fragment = document.createDocumentFragment();
+
+            const labelEl = document.createElement("span");
+            labelEl.className = "analysis-skill-label";
+            labelEl.textContent = label;
+            fragment.appendChild(labelEl);
+
+            const box = document.createElement("div");
+            box.className = "analysis-skill-box " + type;
+
+            skills.forEach(function (skill) {
+                const token = document.createElement("span");
+                token.className = "analysis-skill-token";
+                token.textContent = skill;
+                box.appendChild(token);
+            });
+
+            fragment.appendChild(box);
+
+            el.replaceChildren(fragment);
+            el.dataset.skillEnhanced = "true";
+        });
+    }
+
+    function startSkillEnhancement() {
+        enhanceSkillText();
+
+        const observer = new MutationObserver(function () {
+            enhanceSkillText();
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", startSkillEnhancement);
+    } else {
+        startSkillEnhancement();
+    }
+})();
+</script></body>
 </html>
+
+
 
 
 
