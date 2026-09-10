@@ -1189,6 +1189,561 @@ button {
     }
 }
 }
+
+/* =========================================================
+   RESUMATCH RESULT EXPERIENCE
+   ========================================================= */
+
+.results {
+    display: none !important;
+    margin-top: 58px;
+}
+
+.results.active {
+    display: block !important;
+}
+
+.results-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.results-kicker {
+    color: var(--terracotta);
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 7px;
+}
+
+.results-head h2 {
+    margin: 0;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 30px;
+    line-height: 1;
+    letter-spacing: -1.5px;
+}
+
+.results-head p {
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.results-status {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 11px;
+    border-radius: 8px;
+    background: var(--sage-light);
+    color: var(--sage);
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+}
+
+.results-status span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--sage);
+}
+
+/* MAIN MATCH CARD */
+
+.match-overview {
+    min-height: 395px;
+    display: grid;
+    grid-template-columns: .78fr 1.22fr;
+    overflow: hidden;
+    position: relative;
+}
+
+.match-overview::before {
+    content: "MATCH";
+    position: absolute;
+    right: -8px;
+    top: -48px;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 125px;
+    font-weight: 800;
+    letter-spacing: -9px;
+    color: rgba(114,105,181,.035);
+    pointer-events: none;
+}
+
+.overall-match {
+    position: relative;
+    padding: 29px;
+    min-height: 395px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background:
+        radial-gradient(
+            circle at 50% 48%,
+            rgba(114,105,181,.12),
+            rgba(114,105,181,0) 43%
+        ),
+        #faf8f4;
+    border-right: 1px solid var(--line);
+    overflow: hidden;
+}
+
+.metric-label {
+    color: var(--muted);
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.3px;
+}
+
+.match-visual {
+    width: 245px;
+    height: 245px;
+    position: relative;
+    margin: -5px auto 0;
+    display: grid;
+    place-items: center;
+}
+
+.match-orbit {
+    position: absolute;
+    border: 1px solid rgba(114,105,181,.17);
+    border-radius: 50%;
+}
+
+.orbit-one {
+    width: 245px;
+    height: 155px;
+    transform: rotate(-21deg);
+}
+
+.orbit-two {
+    width: 205px;
+    height: 205px;
+    transform: rotate(31deg);
+}
+
+.orbit-three {
+    width: 154px;
+    height: 235px;
+    transform: rotate(66deg);
+}
+
+.score-ring {
+    width: 151px;
+    height: 151px;
+    border-radius: 50%;
+    position: relative;
+    display: grid;
+    place-items: center;
+    background:
+        conic-gradient(
+            var(--violet) 0deg,
+            var(--violet) 0deg,
+            #e5e0d9 0deg
+        );
+    transform: rotate(-12deg);
+    box-shadow:
+        0 12px 35px rgba(114,105,181,.16);
+}
+
+.score-ring::before {
+    content: "";
+    position: absolute;
+    inset: 9px;
+    border-radius: 50%;
+    background: var(--paper);
+}
+
+.score-inner {
+    position: relative;
+    transform: rotate(12deg);
+    display: flex;
+    align-items: baseline;
+}
+
+.score-number {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 54px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -4px;
+    color: var(--plum);
+}
+
+.score-percent {
+    margin-left: 3px;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--violet);
+}
+
+.match-marker {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--terracotta);
+    z-index: 3;
+}
+
+.marker-one {
+    top: 30px;
+    right: 39px;
+}
+
+.marker-two {
+    bottom: 37px;
+    left: 30px;
+    background: var(--sage);
+}
+
+.match-verdict {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.match-verdict strong {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 12px;
+}
+
+.match-verdict span {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+/* COVERAGE */
+
+.coverage-panel {
+    padding: 29px;
+    position: relative;
+}
+
+.coverage-header {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+}
+
+.coverage-title {
+    margin-top: 7px;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -.5px;
+}
+
+.coverage-count {
+    text-align: right;
+}
+
+.coverage-count strong {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 29px;
+    letter-spacing: -1.5px;
+}
+
+.coverage-count span {
+    display: block;
+    color: var(--muted);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    font-weight: 800;
+}
+
+.coverage-track {
+    height: 8px;
+    width: 100%;
+    border-radius: 20px;
+    background: #ece7e0;
+    overflow: hidden;
+    margin: 23px 0 29px;
+}
+
+.coverage-fill {
+    height: 100%;
+    width: 0;
+    border-radius: inherit;
+    background:
+        linear-gradient(
+            90deg,
+            var(--violet),
+            #9b83ad,
+            var(--terracotta)
+        );
+    transition: width .8s ease;
+}
+
+.skills-section {
+    margin-top: 8px;
+}
+
+.missing-section {
+    margin-top: 27px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+}
+
+.skills-section-header {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--muted);
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+.skills-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+}
+
+.matched-dot {
+    background: var(--sage);
+}
+
+.missing-dot {
+    background: var(--terracotta);
+}
+
+.skill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.skill-pill {
+    padding: 7px 10px;
+    border-radius: 7px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.skill-pill.matched {
+    color: var(--sage);
+    background: var(--sage-light);
+}
+
+.skill-pill.missing {
+    color: var(--terracotta);
+    background: var(--terracotta-light);
+}
+
+/* LOWER RESULT CARDS */
+
+.result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 18px;
+}
+
+.result-card {
+    padding: 26px;
+    min-height: 220px;
+}
+
+.result-card-heading {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 18px;
+}
+
+.result-number {
+    width: 27px;
+    height: 27px;
+    display: grid;
+    place-items: center;
+    flex: none;
+    border-radius: 8px;
+    background: var(--violet-light);
+    color: var(--violet);
+    font-size: 9px;
+    font-weight: 800;
+}
+
+.result-card-label {
+    color: var(--muted);
+    font-size: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 4px;
+}
+
+.result-card h3 {
+    margin: 0;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 15px;
+}
+
+.analysis-text {
+    color: var(--plum-soft);
+    font-size: 11px;
+    line-height: 1.75;
+    white-space: pre-line;
+}
+
+.recommendation-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.recommendation-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--plum-soft);
+    font-size: 11px;
+    line-height: 1.55;
+}
+
+.recommendation-list li:last-child {
+    border-bottom: 0;
+}
+
+.recommendation-list li::before {
+    content: "↗";
+    color: var(--terracotta);
+    font-weight: 800;
+    margin-right: 8px;
+}
+
+/* EVIDENCE */
+
+.evidence-card {
+    margin-top: 18px;
+    padding: 26px;
+}
+
+.evidence-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.evidence-heading h3 {
+    margin: 0;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 15px;
+}
+
+.evidence-note {
+    color: var(--sage);
+    background: var(--sage-light);
+    padding: 7px 9px;
+    border-radius: 7px;
+    font-size: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+}
+
+.evidence-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.evidence-item {
+    padding: 14px;
+    border-radius: 11px;
+    border: 1px solid var(--line);
+    background: #faf8f4;
+}
+
+.evidence-skill {
+    color: var(--violet);
+    font-size: 10px;
+    font-weight: 800;
+    margin-bottom: 7px;
+}
+
+.evidence-text {
+    color: var(--muted);
+    font-size: 9px;
+    line-height: 1.5;
+}
+
+/* RESULT RESPONSIVE */
+
+@media (max-width: 1050px) {
+
+    .match-overview {
+        grid-template-columns: 1fr;
+    }
+
+    .overall-match {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+        min-height: 340px;
+    }
+
+    .result-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .evidence-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+
+    .results-head {
+        display: block;
+    }
+
+    .results-status {
+        display: inline-flex;
+        margin-top: 12px;
+    }
+
+    .overall-match {
+        min-height: 330px;
+        padding: 22px;
+    }
+
+    .match-visual {
+        transform: scale(.88);
+        margin-top: -10px;
+        margin-bottom: -15px;
+    }
+
+    .coverage-panel {
+        padding: 22px;
+    }
+
+    .evidence-heading {
+        display: block;
+    }
+
+    .evidence-note {
+        display: inline-block;
+        margin-top: 10px;
+    }
+
+    .evidence-grid {
+        grid-template-columns: 1fr;
+    }
+}
 </style>
 </head>
 
@@ -1466,127 +2021,190 @@ We are looking for a Software Engineer with experience in Java, Spring Boot, RES
 
     <section class="results" id="results">
 
-        <div class="results-head">
-            <div>
-                <h2>Your match</h2>
-                <p>
-                    Here's what your resume currently demonstrates for this role.
-                </p>
-            </div>
-
-            <div class="results-status">
-                Analysis complete
-            </div>
+    <div class="results-head">
+        <div>
+            <div class="results-kicker">Resume analysis</div>
+            <h2>Your match</h2>
+            <p>How closely your resume currently aligns with this role.</p>
         </div>
 
-        <div class="result-top">
+        <div class="results-status">
+            <span></span>
+            Analysis complete
+        </div>
+    </div>
 
-            <div class="score-card">
+    <div class="match-overview card">
 
-                <div class="score-label">
-                    Overall resume fit
-                </div>
+        <div class="overall-match">
 
-                <div class="score-ring" id="scoreRing">
+            <div class="metric-label">
+                Overall match
+            </div>
+
+            <div class="match-visual">
+
+                <div class="match-orbit orbit-one"></div>
+                <div class="match-orbit orbit-two"></div>
+                <div class="match-orbit orbit-three"></div>
+
+                <div class="match-marker marker-one"></div>
+                <div class="match-marker marker-two"></div>
+
+                <div
+                    class="score-ring"
+                    id="scoreRing"
+                >
                     <div class="score-inner">
-                        <span class="score-number" id="score">0</span>
+                        <span
+                            class="score-number"
+                            id="score"
+                        >0</span>
                         <span class="score-percent">%</span>
                     </div>
                 </div>
 
-                <div class="score-message">
-                    Match based on verified resume evidence
-                </div>
-
             </div>
 
-            <div class="card match-card">
+            <div class="match-verdict">
+                <strong>Resume fit</strong>
+                <span>based on verified evidence</span>
+            </div>
 
-                <div class="metric-row">
-                    <div class="metric-title">
+        </div>
+
+        <div class="coverage-panel">
+
+            <div class="coverage-header">
+
+                <div>
+                    <div class="metric-label">
                         Skill coverage
                     </div>
 
-                    <div class="metric-count">
-                        <span id="matchedCount">0</span> matched
+                    <div class="coverage-title">
+                        What your resume covers
                     </div>
                 </div>
 
-                <div class="coverage">
-                    <div
-                        class="coverage-fill"
-                        id="coverageFill"
-                    ></div>
-                </div>
-
-                <div class="skill-columns">
-
-                    <div>
-                        <div class="skill-heading">
-                            Skills you demonstrate
-                        </div>
-
-                        <div
-                            class="skill-list"
-                            id="matchedSkills"
-                        ></div>
-                    </div>
-
-                    <div>
-                        <div class="skill-heading">
-                            Skills to address
-                        </div>
-
-                        <div
-                            class="skill-list"
-                            id="missingSkills"
-                        ></div>
-                    </div>
-
+                <div class="coverage-count">
+                    <strong id="matchedCount">0</strong>
+                    <span>matched</span>
                 </div>
 
             </div>
 
+            <div class="coverage-track">
+                <div
+                    class="coverage-fill"
+                    id="coverageFill"
+                ></div>
             </div>
-        </div>
-        <div class="lower-grid">
 
-            <div class="card result-card">
+            <div class="skills-section">
 
-                <h3>What the analysis says</h3>
+                <div class="skills-section-header">
+                    <span class="skills-dot matched-dot"></span>
+                    Skills matched
+                </div>
 
                 <div
-                    class="analysis-text"
-                    id="analysis"
+                    class="skill-list"
+                    id="matchedSkills"
                 ></div>
 
             </div>
 
-            <div class="card result-card">
+            <div class="skills-section missing-section">
 
-                <h3>What you should improve</h3>
+                <div class="skills-section-header">
+                    <span class="skills-dot missing-dot"></span>
+                    Skills missing
+                </div>
 
-                <ul
-                    class="recommendation-list"
-                    id="recommendations"
-                ></ul>
+                <div
+                    class="skill-list"
+                    id="missingSkills"
+                ></div>
 
             </div>
 
         </div>
 
-        <div class="card evidence-card">
+    </div>
 
-            <h3>Evidence found in your resume</h3>
+    <div class="result-grid">
+
+        <div class="card result-card">
+
+            <div class="result-card-heading">
+                <div class="result-number">01</div>
+
+                <div>
+                    <div class="result-card-label">
+                        Assessment
+                    </div>
+
+                    <h3>What the analysis says</h3>
+                </div>
+            </div>
 
             <div
-                class="evidence-grid"
-                id="skillEvidence"
+                class="analysis-text"
+                id="analysis"
             ></div>
 
         </div>
 
-    </section>
+        <div class="card result-card">
+
+            <div class="result-card-heading">
+                <div class="result-number">02</div>
+
+                <div>
+                    <div class="result-card-label">
+                        Next steps
+                    </div>
+
+                    <h3>What you should improve</h3>
+                </div>
+            </div>
+
+            <ul
+                class="recommendation-list"
+                id="recommendations"
+            ></ul>
+
+        </div>
+
+    </div>
+
+    <div class="card evidence-card">
+
+        <div class="evidence-heading">
+
+            <div>
+                <div class="result-card-label">
+                    Resume evidence
+                </div>
+
+                <h3>Why these skills were matched</h3>
+            </div>
+
+            <div class="evidence-note">
+                Verified from your resume
+            </div>
+
+        </div>
+
+        <div
+            class="evidence-grid"
+            id="skillEvidence"
+        ></div>
+
+    </div>
+
+</section>
 
 </section>
 
@@ -1881,6 +2499,561 @@ function renderResults(data) {
 .evidence-card.result-visible {
     display: block !important;
 }
+
+/* =========================================================
+   RESUMATCH RESULT EXPERIENCE
+   ========================================================= */
+
+.results {
+    display: none !important;
+    margin-top: 58px;
+}
+
+.results.active {
+    display: block !important;
+}
+
+.results-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.results-kicker {
+    color: var(--terracotta);
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 7px;
+}
+
+.results-head h2 {
+    margin: 0;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 30px;
+    line-height: 1;
+    letter-spacing: -1.5px;
+}
+
+.results-head p {
+    margin: 8px 0 0;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.results-status {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 11px;
+    border-radius: 8px;
+    background: var(--sage-light);
+    color: var(--sage);
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+}
+
+.results-status span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--sage);
+}
+
+/* MAIN MATCH CARD */
+
+.match-overview {
+    min-height: 395px;
+    display: grid;
+    grid-template-columns: .78fr 1.22fr;
+    overflow: hidden;
+    position: relative;
+}
+
+.match-overview::before {
+    content: "MATCH";
+    position: absolute;
+    right: -8px;
+    top: -48px;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 125px;
+    font-weight: 800;
+    letter-spacing: -9px;
+    color: rgba(114,105,181,.035);
+    pointer-events: none;
+}
+
+.overall-match {
+    position: relative;
+    padding: 29px;
+    min-height: 395px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background:
+        radial-gradient(
+            circle at 50% 48%,
+            rgba(114,105,181,.12),
+            rgba(114,105,181,0) 43%
+        ),
+        #faf8f4;
+    border-right: 1px solid var(--line);
+    overflow: hidden;
+}
+
+.metric-label {
+    color: var(--muted);
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.3px;
+}
+
+.match-visual {
+    width: 245px;
+    height: 245px;
+    position: relative;
+    margin: -5px auto 0;
+    display: grid;
+    place-items: center;
+}
+
+.match-orbit {
+    position: absolute;
+    border: 1px solid rgba(114,105,181,.17);
+    border-radius: 50%;
+}
+
+.orbit-one {
+    width: 245px;
+    height: 155px;
+    transform: rotate(-21deg);
+}
+
+.orbit-two {
+    width: 205px;
+    height: 205px;
+    transform: rotate(31deg);
+}
+
+.orbit-three {
+    width: 154px;
+    height: 235px;
+    transform: rotate(66deg);
+}
+
+.score-ring {
+    width: 151px;
+    height: 151px;
+    border-radius: 50%;
+    position: relative;
+    display: grid;
+    place-items: center;
+    background:
+        conic-gradient(
+            var(--violet) 0deg,
+            var(--violet) 0deg,
+            #e5e0d9 0deg
+        );
+    transform: rotate(-12deg);
+    box-shadow:
+        0 12px 35px rgba(114,105,181,.16);
+}
+
+.score-ring::before {
+    content: "";
+    position: absolute;
+    inset: 9px;
+    border-radius: 50%;
+    background: var(--paper);
+}
+
+.score-inner {
+    position: relative;
+    transform: rotate(12deg);
+    display: flex;
+    align-items: baseline;
+}
+
+.score-number {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 54px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -4px;
+    color: var(--plum);
+}
+
+.score-percent {
+    margin-left: 3px;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--violet);
+}
+
+.match-marker {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--terracotta);
+    z-index: 3;
+}
+
+.marker-one {
+    top: 30px;
+    right: 39px;
+}
+
+.marker-two {
+    bottom: 37px;
+    left: 30px;
+    background: var(--sage);
+}
+
+.match-verdict {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.match-verdict strong {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 12px;
+}
+
+.match-verdict span {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+/* COVERAGE */
+
+.coverage-panel {
+    padding: 29px;
+    position: relative;
+}
+
+.coverage-header {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+}
+
+.coverage-title {
+    margin-top: 7px;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -.5px;
+}
+
+.coverage-count {
+    text-align: right;
+}
+
+.coverage-count strong {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 29px;
+    letter-spacing: -1.5px;
+}
+
+.coverage-count span {
+    display: block;
+    color: var(--muted);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    font-weight: 800;
+}
+
+.coverage-track {
+    height: 8px;
+    width: 100%;
+    border-radius: 20px;
+    background: #ece7e0;
+    overflow: hidden;
+    margin: 23px 0 29px;
+}
+
+.coverage-fill {
+    height: 100%;
+    width: 0;
+    border-radius: inherit;
+    background:
+        linear-gradient(
+            90deg,
+            var(--violet),
+            #9b83ad,
+            var(--terracotta)
+        );
+    transition: width .8s ease;
+}
+
+.skills-section {
+    margin-top: 8px;
+}
+
+.missing-section {
+    margin-top: 27px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+}
+
+.skills-section-header {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--muted);
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+.skills-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+}
+
+.matched-dot {
+    background: var(--sage);
+}
+
+.missing-dot {
+    background: var(--terracotta);
+}
+
+.skill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.skill-pill {
+    padding: 7px 10px;
+    border-radius: 7px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.skill-pill.matched {
+    color: var(--sage);
+    background: var(--sage-light);
+}
+
+.skill-pill.missing {
+    color: var(--terracotta);
+    background: var(--terracotta-light);
+}
+
+/* LOWER RESULT CARDS */
+
+.result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 18px;
+}
+
+.result-card {
+    padding: 26px;
+    min-height: 220px;
+}
+
+.result-card-heading {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 18px;
+}
+
+.result-number {
+    width: 27px;
+    height: 27px;
+    display: grid;
+    place-items: center;
+    flex: none;
+    border-radius: 8px;
+    background: var(--violet-light);
+    color: var(--violet);
+    font-size: 9px;
+    font-weight: 800;
+}
+
+.result-card-label {
+    color: var(--muted);
+    font-size: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 4px;
+}
+
+.result-card h3 {
+    margin: 0;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 15px;
+}
+
+.analysis-text {
+    color: var(--plum-soft);
+    font-size: 11px;
+    line-height: 1.75;
+    white-space: pre-line;
+}
+
+.recommendation-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.recommendation-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--plum-soft);
+    font-size: 11px;
+    line-height: 1.55;
+}
+
+.recommendation-list li:last-child {
+    border-bottom: 0;
+}
+
+.recommendation-list li::before {
+    content: "↗";
+    color: var(--terracotta);
+    font-weight: 800;
+    margin-right: 8px;
+}
+
+/* EVIDENCE */
+
+.evidence-card {
+    margin-top: 18px;
+    padding: 26px;
+}
+
+.evidence-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.evidence-heading h3 {
+    margin: 0;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 15px;
+}
+
+.evidence-note {
+    color: var(--sage);
+    background: var(--sage-light);
+    padding: 7px 9px;
+    border-radius: 7px;
+    font-size: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+}
+
+.evidence-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.evidence-item {
+    padding: 14px;
+    border-radius: 11px;
+    border: 1px solid var(--line);
+    background: #faf8f4;
+}
+
+.evidence-skill {
+    color: var(--violet);
+    font-size: 10px;
+    font-weight: 800;
+    margin-bottom: 7px;
+}
+
+.evidence-text {
+    color: var(--muted);
+    font-size: 9px;
+    line-height: 1.5;
+}
+
+/* RESULT RESPONSIVE */
+
+@media (max-width: 1050px) {
+
+    .match-overview {
+        grid-template-columns: 1fr;
+    }
+
+    .overall-match {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+        min-height: 340px;
+    }
+
+    .result-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .evidence-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+
+    .results-head {
+        display: block;
+    }
+
+    .results-status {
+        display: inline-flex;
+        margin-top: 12px;
+    }
+
+    .overall-match {
+        min-height: 330px;
+        padding: 22px;
+    }
+
+    .match-visual {
+        transform: scale(.88);
+        margin-top: -10px;
+        margin-bottom: -15px;
+    }
+
+    .coverage-panel {
+        padding: 22px;
+    }
+
+    .evidence-heading {
+        display: block;
+    }
+
+    .evidence-note {
+        display: inline-block;
+        margin-top: 10px;
+    }
+
+    .evidence-grid {
+        grid-template-columns: 1fr;
+    }
+}
 </style>
 
 <script>
@@ -1959,6 +3132,7 @@ function renderResults(data) {
 </script>
 </body>
 </html>
+
 
 
 
