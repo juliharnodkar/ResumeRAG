@@ -5,16 +5,41 @@ import com.example.resumerag.model.RequirementExpression;
 import com.example.resumerag.model.RequirementImportance;
 import com.example.resumerag.model.RequirementType;
 import com.example.resumerag.model.Verifiability;
+import com.example.resumerag.skill.SkillRegistry;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class JobRequirementExtractionService {
+
+    private static final Logger log =
+            LoggerFactory.getLogger(JobRequirementExtractionService.class);
+
+    private static final String EXTRACTION_PROMPT = """
+            Extract concrete job requirements as a JSON array. JSON only.
+
+            Each item:
+            {"originalText":"short canonical label","expression":{"type":"Concept","name":"Git"} OR AnyOf/AllOf,"type":"SKILL|EXPERIENCE|PROJECT|DOMAIN|EDUCATION|OTHER","importance":"HIGH|MEDIUM|LOW","experienceRequirement":null,"verifiability":"VERIFIABLE|NOT_VERIFIABLE"}
+
+            Rules:
+            - Extract stated skills, tools, education, experience, and behaviors.
+            - Canonicalize names (OOP, SQL, REST APIs, Git, DBMS).
+            - AnyOf = alternatives. AllOf = jointly required. Nested OK.
+            - Skip fluff (we are looking for, join our team, culture).
+            - Do not invent requirements.
+            - If the JD has ordinary requirements, do not return [].
+
+            JD:
+            """;
 
     private final ChatClient chatClient;
     private final ObjectMapper objectMapper;
@@ -29,207 +54,140 @@ public class JobRequirementExtractionService {
 
     public List<JobRequirement> extract(String jobDescription) {
 
-        String prompt = """
-                You are extracting job requirements.
+        if (jobDescription == null || jobDescription.isBlank()) {
+            log.info("JD extraction skipped: empty JD. chars=0");
+            return List.of();
+        }
 
-                Read the job description below and identify every concrete
-                requirement, qualification, capability, technology,
-                responsibility, domain, education requirement, or experience
-                requirement that a candidate is expected to have.
+        log.info("JD extraction start: chars={}", jobDescription.length());
+        log.info("JD text received: {}", truncate(jobDescription, 800));
 
-                IMPORTANT:
-                - Do NOT return an empty array if the job description contains
-                  ordinary job requirements.
-                - Preserve uncommon or unknown concepts.
-                - Do not restrict extraction to software engineering.
-                - Do not invent requirements.
-                - Extract requirements directly stated or clearly implied
-                  by the job description.
-                - Preserve the logical relationship between concepts.
-                - An explicit "or", "either ... or ...", or equivalent
-                  alternative means ANY OF those concepts is acceptable.
-                - An explicit "and", or concepts that are jointly required,
-                  means ALL OF those concepts are required.
-                - Do not convert alternatives into jointly required concepts.
-                - Expressions may be nested.
+        List<JobRequirement> llmExtracted = extractWithLlm(jobDescription);
+        if (!llmExtracted.isEmpty()) {
+            log.info(
+                    "JD extraction source=LLM count={} names={}",
+                    llmExtracted.size(),
+                    llmExtracted.stream().map(JobRequirement::originalText).toList()
+            );
+            return llmExtracted;
+        }
 
-                Return ONLY valid JSON.
+        List<JobRequirement> deterministic =
+                DeterministicJdRequirementExtractor.extract(jobDescription);
+        log.warn(
+                "JD extraction source=DETERMINISTIC_FALLBACK count={} names={} (LLM empty/failed)",
+                deterministic.size(),
+                deterministic.stream().map(JobRequirement::originalText).toList()
+        );
+        return deterministic;
+    }
 
-                Return exactly this format:
-
-                [
-                  {
-                    "originalText": "Strong proficiency in Java or Python.",
-                    "expression": {
-                      "type": "AnyOf",
-                      "children": [
-                        {
-                          "type": "Concept",
-                          "name": "Java"
-                        },
-                        {
-                          "type": "Concept",
-                          "name": "Python"
-                        }
-                      ]
-                    },
-                    "type": "SKILL",
-                    "importance": "HIGH",
-                    "experienceRequirement": null,
-                    "verifiability": "VERIFIABLE"
-                  }
-                ]
-
-                Expression rules:
-
-                1. A single concept:
-                {
-                  "type": "Concept",
-                  "name": "Java"
-                }
-
-                2. Jointly required concepts:
-                {
-                  "type": "AllOf",
-                  "children": [
-                    {"type": "Concept", "name": "clean code"},
-                    {"type": "Concept", "name": "maintainable code"},
-                    {"type": "Concept", "name": "unit testing"}
-                  ]
-                }
-
-                3. Alternative concepts:
-                {
-                  "type": "AnyOf",
-                  "children": [
-                    {"type": "Concept", "name": "Java"},
-                    {"type": "Concept", "name": "Python"}
-                  ]
-                }
-
-                4. Nested logic is allowed. For example:
-
-                "Bachelor's degree in Computer Science, Computer Engineering,
-                or a related field"
-
-                can be represented as:
-
-                {
-                  "type": "AllOf",
-                  "children": [
-                    {
-                      "type": "Concept",
-                      "name": "Bachelor's degree"
-                    },
-                    {
-                      "type": "AnyOf",
-                      "children": [
-                        {
-                          "type": "Concept",
-                          "name": "Computer Science"
-                        },
-                        {
-                          "type": "Concept",
-                          "name": "Computer Engineering"
-                        },
-                        {
-                          "type": "Concept",
-                          "name": "related field"
-                        }
-                      ]
-                    }
-                  ]
-                }
-
-                Another example:
-
-                "SQL and PostgreSQL or MySQL"
-
-                should preserve the distinction between the required SQL
-                capability and the PostgreSQL/MySQL alternative rather than
-                requiring PostgreSQL AND MySQL.
-
-                Allowed expression types:
-                Concept
-                AllOf
-                AnyOf
-
-                Allowed requirement type values:
-                SKILL
-                EXPERIENCE
-                PROJECT
-                DOMAIN
-                EDUCATION
-                OTHER
-
-                Allowed importance values:
-                HIGH
-                MEDIUM
-                LOW
-
-                "experienceRequirement" should contain the explicit experience
-                condition when one exists, otherwise null.
-
-                "verifiability" must be VERIFIABLE when the requirement can
-                reasonably be supported or assessed from resume evidence.
-                Use NOT_VERIFIABLE when the requirement depends primarily
-                on information a resume cannot establish, such as current
-                availability, willingness to work specific shifts, willingness
-                to relocate, salary expectations, or other future/personal
-                conditions that are not established by resume content.
-
-                Allowed verifiability values:
-                VERIFIABLE
-                NOT_VERIFIABLE
-
-                JOB DESCRIPTION:
-                %s
-                """.formatted(jobDescription);
-
+    private List<JobRequirement> extractWithLlm(String jobDescription) {
         try {
-
             String response = chatClient.prompt()
-                    .user(prompt)
+                    .user(EXTRACTION_PROMPT + jobDescription)
                     .call()
                     .content();
 
             if (response == null || response.isBlank()) {
-                System.err.println("JD extraction returned an empty response.");
+                log.warn("JD extraction LLM returned empty response.");
                 return List.of();
             }
 
-            String json = cleanJson(response);
+            log.info("JD extraction LLM response: {}", truncate(response, 800));
 
+            String json = cleanJson(response);
             JsonNode root = objectMapper.readTree(json);
 
             if (!root.isArray()) {
-                System.err.println("JD extraction response was not an array.");
+                log.warn("JD extraction parse failure: response was not a JSON array.");
                 return List.of();
             }
 
             List<JobRequirement> extracted = new ArrayList<>();
 
             for (JsonNode node : root) {
-
-                JobRequirement requirement = parseRequirement(node);
-
-                if (requirement != null) {
-                    extracted.add(requirement);
+                try {
+                    recoverIncompleteItem(node);
+                    JobRequirement requirement = parseRequirement(node);
+                    if (requirement != null) {
+                        extracted.add(requirement);
+                    }
+                } catch (Exception parseEx) {
+                    log.warn("JD extraction skipped one item: {}", parseEx.getMessage());
                 }
             }
-
-            System.out.println(
-                    "JD extraction produced "
-                            + extracted.size()
-                            + " requirements."
-            );
 
             return extracted;
 
         } catch (Exception ex) {
-
+            log.warn(
+                    "JD extraction LLM failed: {} - {}",
+                    ex.getClass().getSimpleName(),
+                    ex.getMessage()
+            );
             return List.of();
         }
+    }
+
+    private static String truncate(String value, int max) {
+        if (value == null) {
+            return "";
+        }
+        String compact = value.replaceAll("\\s+", " ").trim();
+        return compact.length() <= max ? compact : compact.substring(0, max) + "…";
+    }
+
+    /**
+     * Local LLMs often omit verifiability or emit expression:null.
+     * Fill only missing fields. Do not invent AllOf from legacy concept arrays.
+     */
+    private void recoverIncompleteItem(JsonNode node) {
+        if (!(node instanceof ObjectNode object)) {
+            return;
+        }
+
+        String originalText = text(object, "originalText");
+
+        if (missing(object, "verifiability")) {
+            object.put("verifiability", "VERIFIABLE");
+        }
+        if (missing(object, "importance")) {
+            object.put("importance", "MEDIUM");
+        }
+        if (missing(object, "type")) {
+            object.put("type", inferType(originalText));
+        }
+
+        JsonNode expression = object.get("expression");
+        boolean expressionMissing = expression == null
+                || expression.isNull()
+                || (expression.isObject() && missing(expression, "type"));
+
+        if (expressionMissing && originalText != null && !originalText.isBlank()) {
+            ObjectNode concept = object.putObject("expression");
+            concept.put("type", "Concept");
+            concept.put("name", originalText.trim());
+        }
+    }
+
+    private boolean missing(JsonNode node, String field) {
+        JsonNode value = node.get(field);
+        return value == null || value.isNull() || (value.isTextual() && value.asText().isBlank());
+    }
+
+    private String inferType(String originalText) {
+        if (originalText == null) {
+            return "SKILL";
+        }
+        String lower = originalText.toLowerCase(Locale.ROOT);
+        if (lower.contains("degree") || lower.contains("bachelor") || lower.contains("education")) {
+            return "EDUCATION";
+        }
+        if (lower.contains("intern") || lower.contains("year") || lower.contains("experience")) {
+            return "EXPERIENCE";
+        }
+        return "SKILL";
     }
 
     private String cleanJson(String response) {
@@ -418,7 +376,9 @@ public class JobRequirementExtractionService {
             );
         }
 
-        return concept.trim();
+        String trimmed = concept.trim();
+        String canonical = SkillRegistry.canonicalize(trimmed);
+        return canonical != null ? canonical : trimmed;
     }
 
     private RequirementType parseType(String type) {
@@ -434,6 +394,10 @@ public class JobRequirementExtractionService {
                     type.trim().toUpperCase()
             );
         } catch (IllegalArgumentException ex) {
+            String normalized = type.trim().toUpperCase(Locale.ROOT);
+            if (normalized.equals("BEHAVIOR") || normalized.equals("SOFT_SKILL") || normalized.equals("SOFT")) {
+                return RequirementType.SKILL;
+            }
             throw new IllegalArgumentException(
                     "Unsupported requirement type: " + type,
                     ex

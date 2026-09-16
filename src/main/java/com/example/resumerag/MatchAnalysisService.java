@@ -9,6 +9,8 @@ import com.example.resumerag.model.RequirementStatus;
 import com.example.resumerag.model.SkillMatch;
 import com.example.resumerag.model.TailoredMatchResult;
 import com.example.resumerag.skill.AnalysisGuard;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.VectorStore;
@@ -24,6 +26,9 @@ import java.util.Set;
 
 @Service
 public class MatchAnalysisService {
+
+    private static final Logger log =
+            LoggerFactory.getLogger(MatchAnalysisService.class);
 
     private static final Comparator<Evidence> EXPLANATION_EVIDENCE_ORDER =
             Comparator.comparing(Evidence::directMention)
@@ -144,10 +149,13 @@ public class MatchAnalysisService {
 
         // Extract and match JD requirements
         List<JobRequirement> extractedRequirements = requirementExtractionService.extract(jobDescription);
+        log.info("analyzeTailored extractedRequirements={}", extractedRequirements == null ? 0 : extractedRequirements.size());
+
         List<RequirementMatch> requirements = requirementMatchingService.matchRequirements(
                 extractedRequirements,
                 resumeId
         );
+        log.info("analyzeTailored matchedRequirements={}", requirements == null ? 0 : requirements.size());
 
         // Calculate JD alignment signal (bounded 0-30 points out of 100)
         int jdAlignmentPoints = calculateBoundedJDAlignment(requirements);
@@ -170,6 +178,7 @@ public class MatchAnalysisService {
 
         // Generate tailoring tips
         List<String> tailoringTips = jdTailoringService.generateTailoringTips(requirements, matched, missing, jobDescription);
+        log.info("analyzeTailored tailoringTips={}", tailoringTips == null ? 0 : tailoringTips.size());
 
         String scoreExplanation = buildScoreExplanation(overallScore, qualityAssessment.overallQualityScore(), jdAlignmentPoints);
 
@@ -187,14 +196,17 @@ public class MatchAnalysisService {
 
     private List<Document> retrieveResumeChunks(String resumeId) {
         try {
-            return vectorStore.similaritySearch(
+            List<Document> chunks = vectorStore.similaritySearch(
                     org.springframework.ai.vectorstore.SearchRequest.builder()
                             .query("resume experience skills")
                             .topK(50)
                             .filterExpression("resumeId == '" + resumeId + "'")
                             .build()
             );
+            log.info("analyzeTailored resumeChunks={}", chunks == null ? 0 : chunks.size());
+            return chunks;
         } catch (Exception ex) {
+            log.warn("analyzeTailored resume chunk retrieval failed: {}", ex.getMessage());
             return List.of();
         }
     }

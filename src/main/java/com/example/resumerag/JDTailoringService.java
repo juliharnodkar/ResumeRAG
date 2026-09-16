@@ -1,26 +1,25 @@
 package com.example.resumerag;
 
+import com.example.resumerag.model.RequirementExpression;
 import com.example.resumerag.model.RequirementMatch;
 import com.example.resumerag.model.RequirementStatus;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 /**
- * Generate concise, truthful tailoring recommendations based on JD alignment.
- * 
- * - Never invent resume facts
- * - Use conditional language when resume evidence is absent
- * - Identify high-impact improvements
- * - Limit to 3-5 actionable suggestions
+ * Grounded tailoring tips from RAG evidence status.
+ * Deterministic first; LLM is optional phrasing only and cannot invent facts.
  */
 @Service
 public class JDTailoringService {
+
+    private static final int MAX_TIPS = 5;
 
     private final ChatClient chatClient;
 
@@ -38,72 +37,107 @@ public class JDTailoringService {
             return List.of();
         }
 
-        Set<String> tips = new HashSet<>();
+        List<RequirementMatch> ranked = requirements.stream()
+                .filter(req -> req != null && req.requirement() != null)
+                .filter(req -> req.status() != RequirementStatus.UNASSESSED)
+                .filter(req -> req.status() != RequirementStatus.NOT_VERIFIABLE)
+                .sorted(Comparator.comparingInt(JDTailoringService::priority))
+                .toList();
 
-        // High-impact JD-driven suggestions
-        for (RequirementMatch req : requirements) {
-            if (req == null || req.requirement() == null) continue;
+        Set<String> tips = new LinkedHashSet<>();
 
-            if (req.status() == RequirementStatus.NOT_EVIDENCED) {
-                // Conditional: "If you have X, surface it"
-                String tip = buildConditionalTip(req.requirement());
-                if (tip != null && !tip.isBlank()) {
-                    tips.add(tip);
-                }
-            } else if (req.status() == RequirementStatus.PARTIAL) {
-                // Suggestion: strengthen existing evidence
-                String tip = buildStrengthTip(req.requirement());
-                if (tip != null && !tip.isBlank()) {
-                    tips.add(tip);
-                }
+        for (RequirementMatch req : ranked) {
+            String tip = buildTip(req);
+            if (tip != null && !tip.isBlank()) {
+                tips.add(tip);
+            }
+            if (tips.size() >= MAX_TIPS) {
+                break;
             }
         }
 
-        // Ensure no duplicates, cap at 5
-        List<String> result = new ArrayList<>(tips);
-        if (result.size() > 5) {
-            result = result.subList(0, 5);
-        }
-
-        return result;
+        // Deterministic tips only — no LLM rephrase (token cost; tips already one sentence).
+        return new ArrayList<>(tips);
     }
 
-    private String buildConditionalTip(String requirement) {
-        String clean = sanitizeRequirement(requirement);
-        if (clean.length() > 100) {
-            clean = clean.substring(0, 100);
-        }
+    private String buildTip(RequirementMatch req) {
+        String label = label(req);
 
-        // Format: "If you have X, mention it in [context]."
-        String context = inferContext(clean);
-        return "If you have " + clean + ", mention it" + context + ".";
+        return switch (req.status()) {
+            case MATCHED ->
+                    "Your resume already shows " + label
+                            + ". Consider placing the strongest related bullet earlier if relevant.";
+            case PARTIAL ->
+                    "Related evidence exists for " + label
+                            + ", but it is not explicit. If you have this experience, state it clearly in the relevant project.";
+            case NOT_EVIDENCED ->
+                    "If you have genuinely used " + label
+                            + ", consider adding it to the relevant project. Do not add it otherwise.";
+            default -> null;
+        };
     }
 
-    private String buildStrengthTip(String requirement) {
-        String clean = sanitizeRequirement(requirement);
-        if (clean.length() > 100) {
-            clean = clean.substring(0, 100);
-        }
-
-        // Format: "Strengthen evidence for X by..."
-        return "Strengthen evidence for " + clean + " with specific examples or quantified results.";
+    private static int priority(RequirementMatch req) {
+        return switch (req.status()) {
+            case PARTIAL -> 0;
+            case NOT_EVIDENCED -> 1;
+            case MATCHED -> 2;
+            default -> 3;
+        };
     }
 
-    private String sanitizeRequirement(String req) {
-        return req.replaceAll("\\s+", " ").toLowerCase(Locale.ROOT).trim();
+    static String label(RequirementMatch req) {
+        String fromExpression = labelExpression(req.expression());
+        if (fromExpression != null && !fromExpression.isBlank() && fromExpression.length() <= 40) {
+            return fromExpression;
+        }
+        String original = sanitize(req.requirement());
+        if (!original.isBlank()) {
+            return original;
+        }
+        return fromExpression == null ? "" : fromExpression;
     }
 
-    private String inferContext(String requirement) {
-        String lower = requirement.toLowerCase(Locale.ROOT);
-        if (lower.contains("project") || lower.contains("tool")) {
-            return " in the relevant project description";
+    private static String labelExpression(RequirementExpression expression) {
+        if (expression instanceof RequirementExpression.Concept concept) {
+            return sanitize(concept.name());
         }
-        if (lower.contains("experience") || lower.contains("year")) {
-            return " explicitly in your employment history";
+        if (expression instanceof RequirementExpression.AnyOf anyOf) {
+            return join(anyOf.children(), " / ");
         }
-        if (lower.contains("skill") || lower.contains("technolog")) {
-            return " in the project where it was used";
+        if (expression instanceof RequirementExpression.AllOf allOf) {
+            return join(allOf.children(), " + ");
         }
-        return " explicitly";
+        return null;
+    }
+
+    private static String join(List<RequirementExpression> children, String separator) {
+        if (children == null || children.isEmpty()) {
+            return null;
+        }
+        List<String> parts = new ArrayList<>();
+        for (RequirementExpression child : children) {
+            String part = labelExpression(child);
+            if (part != null && !part.isBlank()) {
+                parts.add(part);
+            }
+        }
+        if (parts.isEmpty()) {
+            return null;
+        }
+        String joined = String.join(separator, parts);
+        return joined.length() > 80 ? joined.substring(0, 80) : joined;
+    }
+
+    private static String sanitize(String value) {
+        if (value == null) {
+            return "";
+        }
+        String cleaned = value.replaceAll("\\s+", " ").trim();
+        cleaned = cleaned.replaceAll("[.]+$", "").trim();
+        if (cleaned.length() > 60) {
+            cleaned = cleaned.substring(0, 57).trim() + "…";
+        }
+        return cleaned;
     }
 }

@@ -25,9 +25,24 @@ public final class ConceptQueryExpander {
         addRule("Node.js", "nodejs", "node js");
         addRule("Next.js", "nextjs", "next js");
         addRule("REST API", "restful api", "rest apis");
+        addRule("OOP", "object oriented programming", "object-oriented programming");
+        addRule("DBMS", "database", "SQL", "Database Management System");
+        addRule("SQL", "database", "relational database", "Structured Query Language");
+        addRule("Git", "version control", "github");
+        addRule("HTTP", "http protocol", "REST");
+        addRule("REST API", "restful api", "rest apis", "REST APIs");
+        addRule("REST APIs", "REST API", "restful api");
+        addRule("Database Management System", "DBMS", "SQL", "database");
+        addRule("Structured Query Language", "SQL", "database");
         addRule("Machine Learning", "machine-learning");
         addRule("Deep Learning", "deep-learning");
         addRule("Generative AI", "generative artificial intelligence");
+        addRule("debugging", "debug", "troubleshoot");
+        addRule("problem-solving", "problem solving");
+        addRule("communication", "communicate");
+        addRule("teamwork", "collaborate", "team members");
+        addRule("web technologies", "web development", "frontend");
+        addRule("software development lifecycle", "SDLC", "software lifecycle");
     }
 
     private static final int MAX_EXPANSION_QUERIES = 3;

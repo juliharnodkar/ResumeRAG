@@ -9,6 +9,8 @@ import com.example.resumerag.model.RequirementStatus;
 import com.example.resumerag.model.Verifiability;
 import com.example.resumerag.skill.ExperienceDurationParser;
 import org.springframework.ai.document.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,9 @@ import java.util.Locale;
 
 @Service
 public class RequirementMatchingService {
+
+    private static final Logger log =
+            LoggerFactory.getLogger(RequirementMatchingService.class);
 
     private static final int TOP_K = 20;
 
@@ -58,7 +63,23 @@ public class RequirementMatchingService {
         List<RequirementMatch> results = new ArrayList<>();
 
         for (JobRequirement requirement : requirements) {
-            results.add(matchRequirement(requirement, resumeId));
+            RequirementMatch match = matchRequirement(requirement, resumeId);
+            double topRelevance = 0.0;
+            if (match.evidence() != null) {
+                for (Evidence evidence : match.evidence()) {
+                    if (evidence != null) {
+                        topRelevance = Math.max(topRelevance, evidence.relevance());
+                    }
+                }
+            }
+            log.info(
+                    "RAG requirement='{}' retrievedEvidence={} status={} topRelevance={}",
+                    truncate(requirement.originalText(), 80),
+                    match.evidence() == null ? 0 : match.evidence().size(),
+                    match.status(),
+                    String.format(Locale.ROOT, "%.2f", topRelevance)
+            );
+            results.add(match);
         }
 
         return results;
@@ -562,12 +583,22 @@ public class RequirementMatchingService {
                                 request);
 
                 if (documents != null) {
+                    log.info(
+                            "RAG pgvector query='{}' retrievedChunks={}",
+                            truncate(query, 60),
+                            documents.size()
+                    );
                     for (Document document : documents) {
                         mergedCandidates.putIfAbsent(document.getId(), document);
                     }
                 }
             }
         } catch (Exception ex) {
+            log.warn(
+                    "RAG pgvector search failed for '{}': {}",
+                    truncate(requirementText, 60),
+                    ex.getMessage()
+            );
         }
 
         try {
@@ -585,9 +616,19 @@ public class RequirementMatchingService {
                 }
             }
         } catch (Exception ex) {
+            log.warn(
+                    "RAG lexical search failed for '{}': {}",
+                    truncate(requirementText, 60),
+                    ex.getMessage()
+            );
         }
 
         List<Document> finalDocuments = List.copyOf(mergedCandidates.values());
+        log.info(
+                "RAG concept='{}' mergedChunks={}",
+                truncate(requirementText, 60),
+                finalDocuments.size()
+        );
 
         return finalDocuments;
     }
@@ -680,6 +721,14 @@ public class RequirementMatchingService {
                 : value.replace(
                         "'",
                         "''");
+    }
+
+    private static String truncate(String value, int max) {
+        if (value == null) {
+            return "";
+        }
+        String compact = value.replaceAll("\\s+", " ").trim();
+        return compact.length() <= max ? compact : compact.substring(0, max) + "…";
     }
 
     private record Evaluation(

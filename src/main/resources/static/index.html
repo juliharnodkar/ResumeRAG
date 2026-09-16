@@ -714,6 +714,47 @@ button {
     display: block;
 }
 
+.analysis-error {
+    display: none;
+    margin-top: 12px;
+    padding: 11px 14px;
+    border-radius: 9px;
+    background: var(--terracotta-light);
+    color: var(--terracotta);
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.analysis-error.active {
+    display: block;
+}
+
+.results-error {
+    margin-bottom: 18px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: var(--terracotta-light);
+    color: var(--terracotta);
+    font-size: 11px;
+    line-height: 1.55;
+}
+
+.results-error[hidden],
+.result-empty[hidden] {
+    display: none !important;
+}
+
+.result-empty {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.55;
+    padding: 4px 0 2px;
+}
+
+.strength-list {
+    align-items: flex-start;
+}
+
 /* RESULTS */
 
 .results { display: none !important; margin-top: 52px; }
@@ -1266,7 +1307,7 @@ button {
 }
 
 .match-overview::before {
-    content: "MATCH";
+    content: "SCORE";
     position: absolute;
     right: -8px;
     top: -48px;
@@ -2176,25 +2217,24 @@ button {
         </h1>
 
         <p class="hero-copy">
-            ResuMatch compares your resume against a job description,
-            identifies the requirements you already demonstrate, and shows
-            exactly where your application has gaps.
+            ResuMatch assesses how strong your resume is, then uses the job
+            description to suggest how you can tailor it for the role.
         </p>
 
         <div class="hero-meta">
             <div class="meta-item">
                 <div class="meta-icon">?</div>
-                Requirements matched
+                Resume strengths
             </div>
 
             <div class="meta-item">
                 <div class="meta-icon">!</div>
-                Gaps identified
+                Needs attention
             </div>
 
             <div class="meta-item">
                 <div class="meta-icon">?</div>
-                Evidence found
+                JD tailoring
             </div>
         </div>
 
@@ -2305,7 +2345,7 @@ button {
         <div>
             <div class="section-title">Build your match</div>
             <div class="section-subtitle">
-                Give ResuMatch the two things it needs to compare your fit.
+                Give ResuMatch your resume and a job description to assess.
             </div>
         </div>
 
@@ -2402,8 +2442,10 @@ We are looking for a Software Engineer with experience in Java, Spring Boot, RES
             </div>
 
             <div class="loading" id="loading">
-                Comparing your resume with the role...
+                Assessing your resume and how to tailor it for this role...
             </div>
+
+            <div class="analysis-error" id="analysisError"></div>
 
         </div>
 
@@ -2414,22 +2456,24 @@ We are looking for a Software Engineer with experience in Java, Spring Boot, RES
     <div class="results-head">
         <div>
             <div class="results-kicker">Resume analysis</div>
-            <h2>Your match</h2>
-            <p>How closely your resume currently aligns with this role.</p>
+            <h2>Your resume</h2>
+            <p>How strong your resume is and how you can tailor it for this role.</p>
         </div>
 
-        <div class="results-status">
+        <div class="results-status" id="resultsStatus">
             <span></span>
             Analysis complete
         </div>
     </div>
+
+    <div class="results-error" id="resultsError" hidden></div>
 
     <div class="match-overview card">
 
         <div class="overall-match">
 
             <div class="metric-label">
-                Overall match
+                Resume score
             </div>
 
             <div class="match-visual">
@@ -2457,8 +2501,8 @@ We are looking for a Software Engineer with experience in Java, Spring Boot, RES
             </div>
 
             <div class="match-verdict">
-                <strong>Resume fit</strong>
-                <span>based on verified evidence</span>
+                <strong>Overall resume score</strong>
+                <span id="scoreExplanation">Resume strength based on the quality assessment.</span>
             </div>
 
         </div>
@@ -2469,17 +2513,17 @@ We are looking for a Software Engineer with experience in Java, Spring Boot, RES
 
                 <div>
                     <div class="metric-label">
-                        Requirement coverage
+                        Resume quality
                     </div>
 
                     <div class="coverage-title">
-                        What your resume can verify
+                        What your resume demonstrates
                     </div>
                 </div>
 
                 <div class="coverage-count">
-                    <strong id="matchedCount">0</strong>
-                    <span>matched</span>
+                    <strong id="strengthCount">0</strong>
+                    <span>strengths</span>
                 </div>
 
             </div>
@@ -2495,27 +2539,17 @@ We are looking for a Software Engineer with experience in Java, Spring Boot, RES
 
                 <div class="skills-section-header">
                     <span class="skills-dot matched-dot"></span>
-                    Requirements matched
+                    Resume strengths
                 </div>
 
                 <div
-                    class="skill-list"
-                    id="matchedRequirements"
+                    class="skill-list strength-list"
+                    id="resumeStrengths"
                 ></div>
 
-            </div>
-
-            <div class="skills-section missing-section">
-
-                <div class="skills-section-header">
-                    <span class="skills-dot missing-dot"></span>
-                    Requirements needing attention
+                <div class="result-empty" id="resumeStrengthsEmpty" hidden>
+                    No specific strengths were returned.
                 </div>
-
-                <div
-                    class="skill-list"
-                    id="unmatchedRequirements"
-                ></div>
 
             </div>
 
@@ -2532,17 +2566,21 @@ We are looking for a Software Engineer with experience in Java, Spring Boot, RES
 
                 <div>
                     <div class="result-card-label">
-                        Assessment
+                        Needs attention
                     </div>
 
-                    <h3>What the analysis says</h3>
+                    <h3>Where the resume can improve</h3>
                 </div>
             </div>
 
-            <div
-                class="analysis-text"
-                id="analysis"
-            ></div>
+            <ul
+                class="recommendation-list"
+                id="needsAttention"
+            ></ul>
+
+            <div class="result-empty" id="needsAttentionEmpty" hidden>
+                No additional improvement areas were identified.
+            </div>
 
         </div>
 
@@ -2553,17 +2591,21 @@ We are looking for a Software Engineer with experience in Java, Spring Boot, RES
 
                 <div>
                     <div class="result-card-label">
-                        Next steps
+                        JD tailoring
                     </div>
 
-                    <h3>What you should improve</h3>
+                    <h3>How to tailor this resume for the role</h3>
                 </div>
             </div>
 
             <ul
                 class="recommendation-list"
-                id="recommendations"
+                id="jdTailoring"
             ></ul>
+
+            <div class="result-empty" id="jdTailoringEmpty" hidden>
+                No additional tailoring recommendations were identified.
+            </div>
 
         </div>
 
@@ -2589,9 +2631,76 @@ const jobDescription = document.getElementById("jobDescription");
 const charCount = document.getElementById("charCount");
 const analyzeButton = document.getElementById("analyzeButton");
 const loading = document.getElementById("loading");
+const analysisError = document.getElementById("analysisError");
 const results = document.getElementById("results");
+const resultsError = document.getElementById("resultsError");
+const resultsStatus = document.getElementById("resultsStatus");
+
+const ANALYSIS_ENDPOINT = "/api/analyze-tailored";
 
 let resumeId = null;
+
+function setAnalysisError(message) {
+    if (analysisError) {
+        analysisError.textContent = message || "";
+        analysisError.classList.toggle("active", Boolean(message));
+    }
+
+    if (resultsError) {
+        if (message) {
+            resultsError.hidden = false;
+            resultsError.textContent = message;
+        } else {
+            resultsError.hidden = true;
+            resultsError.textContent = "";
+        }
+    }
+}
+
+function setResultsStatus(label) {
+    if (!resultsStatus) {
+        return;
+    }
+
+    const textNode = Array.from(resultsStatus.childNodes).find(function (node) {
+        return node.nodeType === Node.TEXT_NODE && node.textContent.trim();
+    });
+
+    if (textNode) {
+        textNode.textContent = " " + label;
+    } else {
+        resultsStatus.appendChild(document.createTextNode(" " + label));
+    }
+}
+
+function extractErrorMessage(raw, status) {
+    if (!raw) {
+        return "Analysis failed (HTTP " + status + ").";
+    }
+
+    try {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === "object") {
+            if (parsed.error) {
+                return String(parsed.error);
+            }
+            if (parsed.message) {
+                return String(parsed.message);
+            }
+        }
+    } catch (ignored) {
+        // Response was not JSON; use a safe snippet below.
+    }
+
+    const snippet = String(raw).replace(/\s+/g, " ").trim().slice(0, 180);
+    if (/ollama|connection refused|unavailable|timeout|gemini|google genai/i.test(snippet)) {
+        return "The analysis service is currently unavailable. Resume scoring may be incomplete. Please try again.";
+    }
+
+    return snippet
+        ? "Analysis failed (HTTP " + status + "): " + snippet
+        : "Analysis failed (HTTP " + status + ").";
+}
 
 resumeInput.addEventListener("change", async function () {
 
@@ -2689,43 +2798,95 @@ analyzeButton.addEventListener("click", async function () {
     analyzeButton.disabled = true;
     loading.classList.add("active");
     results.classList.remove("active");
+    setAnalysisError("");
+    setResultsStatus("Analyzing");
 
     const formData = new FormData();
-
     formData.append("resumeId", resumeId);
     formData.append("jobDescription", jd);
 
+    console.log("Analysis endpoint:", ANALYSIS_ENDPOINT);
+    console.log("Analysis request:", {
+        resumeId: resumeId,
+        jobDescriptionLength: jd.length
+    });
+
     try {
 
-        console.log("ANALYZE: sending request", {
-            resumeId: resumeId,
-            jobDescriptionLength: jd.length
-
-        });
-        const response = await fetch("/api/analyze-tailored", {
+        const response = await fetch(ANALYSIS_ENDPOINT, {
             method: "POST",
             body: formData
         });
 
         const raw = await response.text();
 
-        console.log("ANALYZE: raw response", raw);
+        console.log("Analysis HTTP status:", response.status);
+        console.log("Analysis request success/failure:", response.ok ? "success" : "failure");
 
         if (!response.ok) {
-            throw new Error("Analysis failed (HTTP " + response.status + "): " + raw);
+            const errorMessage = extractErrorMessage(raw, response.status);
+            console.log("Analysis response:", raw.slice(0, 500));
+            results.classList.add("active");
+            results.style.visibility = "visible";
+            results.style.opacity = "1";
+            setResultsStatus("Analysis unavailable");
+            setAnalysisError(errorMessage);
+            if (typeof window.renderResults === "function") {
+                window.renderResults({}, { keepVisible: true, error: errorMessage });
+            }
+            return;
         }
 
-        const data = JSON.parse(raw);
+        let data;
+        try {
+            data = JSON.parse(raw);
+        } catch (parseError) {
+            console.log("Analysis response: malformed JSON");
+            results.classList.add("active");
+            results.style.visibility = "visible";
+            results.style.opacity = "1";
+            setResultsStatus("Analysis unavailable");
+            setAnalysisError("The analysis response was malformed. Please try again.");
+            if (typeof window.renderResults === "function") {
+                window.renderResults({}, { keepVisible: true, error: "malformed" });
+            }
+            return;
+        }
 
-        console.log("ANALYZE: parsed data", data);
+        const publicResponse = {
+            score: data && data.score,
+            scoreExplanation: data && data.scoreExplanation,
+            resumeStrengths: data && data.resumeStrengths,
+            needsAttention: data && data.needsAttention,
+            jdTailoringTips: data && data.jdTailoringTips
+        };
 
+        console.log("Analysis response:", publicResponse);
+        console.log("Analysis response keys:", data && typeof data === "object" ? Object.keys(data) : []);
+
+        setResultsStatus("Analysis complete");
         window.renderResults(data);
 
         console.log("ANALYZE: renderResults completed");
 
     } catch (error) {
 
-        alert(error.message);
+        const message = error && error.message
+            ? error.message
+            : "Analysis failed. Please try again.";
+
+        console.log("Analysis request success/failure: failure");
+        console.log("Analysis error:", message);
+
+        results.classList.add("active");
+        results.style.visibility = "visible";
+        results.style.opacity = "1";
+        setResultsStatus("Analysis unavailable");
+        setAnalysisError(message);
+
+        if (typeof window.renderResults === "function") {
+            window.renderResults({}, { keepVisible: true, error: message });
+        }
 
     } finally {
 
@@ -2734,11 +2895,7 @@ analyzeButton.addEventListener("click", async function () {
 
     }
 
-
-
-
-
-    });
+});
 </script>
 <style>
 /* Keep all result-only cards invisible until analysis finishes */
@@ -2827,7 +2984,7 @@ analyzeButton.addEventListener("click", async function () {
 }
 
 .match-overview::before {
-    content: "MATCH";
+    content: "SCORE";
     position: absolute;
     right: -8px;
     top: -48px;
@@ -3604,23 +3761,18 @@ analyzeButton.addEventListener("click", async function () {
     function getResultCards() {
         const cards = [];
 
-        const analysis = document.getElementById("analysis");
-        const recommendations = document.getElementById("recommendations");
+        const needsAttention = document.getElementById("needsAttention");
+        const jdTailoring = document.getElementById("jdTailoring");
 
-        if (analysis) {
-            const card = analysis.closest(".result-card");
+        if (needsAttention) {
+            const card = needsAttention.closest(".result-card");
             if (card) cards.push(card);
         }
 
-        if (recommendations) {
-            const card = recommendations.closest(".result-card");
+        if (jdTailoring) {
+            const card = jdTailoring.closest(".result-card");
             if (card) cards.push(card);
         }
-
-
-
-
-
 
         return cards;
     }
@@ -4069,174 +4221,135 @@ analyzeButton.addEventListener("click", async function () {
         return card;
     }
 
-    function renderRequirements(data) {
-        let container =
-            document.getElementById("requirementsList");
-
-        if (!container) {
-            const resultSection =
-                document.getElementById("results");
-
-            if (!resultSection) {
-                return;
-            }
-
-            container = document.createElement("section");
-            container.id = "requirementsList";
-            container.className =
-                "domain-neutral-requirements";
-
-            resultSection.appendChild(container);
+    function hideLegacyRequirementUi() {
+        const reqContainer = document.getElementById("requirementsList");
+        if (reqContainer) {
+            reqContainer.style.display = "none";
+            reqContainer.innerHTML = "";
         }
-
-        container.innerHTML = "";
-
-        const heading = createElement(
-            "div",
-            "domain-neutral-section-heading",
-            "Requirements"
-        );
-
-        container.appendChild(heading);
-
-        const requirements =
-            Array.isArray(data.requirements)
-                ? data.requirements
-                : [];
-
-        if (requirements.length === 0) {
-            container.appendChild(
-                createElement(
-                    "div",
-                    "domain-neutral-empty",
-                    "No requirements were extracted from the job description."
-                )
-            );
-
-            return;
-        }
-
-        requirements.forEach(function (requirement, index) {
-            if (requirement) {
-                container.appendChild(
-                    renderRequirement(
-                        requirement,
-                        index
-                    )
-                );
-            }
-        });
     }
 
-    function renderList(containerId, headingText, items) {
-        const container =
-            document.getElementById(containerId);
+    function formatFeedbackItem(item) {
+        if (item == null) {
+            return "";
+        }
+
+        if (typeof item === "string") {
+            return text(item);
+        }
+
+        if (typeof item === "object") {
+            if (item.area || item.issue || item.suggestion) {
+                return [item.area, item.issue, item.suggestion]
+                    .filter(function (part) {
+                        return text(part);
+                    })
+                    .join(" — ");
+            }
+
+            return "";
+        }
+
+        return text(item);
+    }
+
+    function collectItems(items) {
+        if (!Array.isArray(items)) {
+            return [];
+        }
+
+        return items
+            .map(formatFeedbackItem)
+            .filter(function (value) {
+                return Boolean(value);
+            });
+    }
+
+    function setEmptyState(emptyId, isEmpty) {
+        const empty = document.getElementById(emptyId);
+        if (empty) {
+            empty.hidden = !isEmpty;
+        }
+    }
+
+    function renderStrengths(items) {
+        const container = document.getElementById("resumeStrengths");
+        const count = document.getElementById("strengthCount");
+        const values = collectItems(items);
+
+        if (count) {
+            count.textContent = String(values.length);
+        }
 
         if (!container) {
+            setEmptyState("resumeStrengthsEmpty", true);
             return;
         }
 
         container.innerHTML = "";
-
-        const heading = createElement(
-            "div",
-            "domain-neutral-section-heading",
-            headingText
-        );
-
-        container.appendChild(heading);
-
-        const values =
-            Array.isArray(items)
-                ? items.filter(function (item) {
-                    return text(item);
-                })
-                : [];
-
-        if (values.length === 0) {
-            container.appendChild(
-                createElement(
-                    "div",
-                    "domain-neutral-empty",
-                    "No items were returned."
-                )
-            );
-
-            return;
-        }
-
-        const list = createElement(
-            "ul",
-            "domain-neutral-list"
-        );
-
         values.forEach(function (item) {
-            list.appendChild(
-                createElement(
-                    "li",
-                    "",
-                    text(item)
-                )
-            );
+            const pill = createElement("div", "skill-pill matched", item);
+            container.appendChild(pill);
         });
 
-        container.appendChild(list);
-    }    
-    function renderRequirementCoverage(data) {
-        const requirements = Array.isArray(data?.requirements)
-            ? data.requirements
-            : [];
-
-        const matched = requirements.filter(
-            r => r && r.status === "MATCHED"
-        );
-
-        const attention = requirements.filter(
-            r => r && r.status !== "MATCHED"
-        );
-
-        const matchedCount = document.getElementById("matchedCount");
-        const coverageFill = document.getElementById("coverageFill");
-        const matchedRequirements = document.getElementById("matchedRequirements");
-        const unmatchedRequirements = document.getElementById("unmatchedRequirements");
-
-        if (matchedCount) {
-            matchedCount.textContent = matched.length;
-        }
-
-        if (coverageFill) {
-            const score = Math.max(0, Math.min(100, Number(data?.score || 0)));
-            coverageFill.style.width = score + "%";
-        }
-
-        if (matchedRequirements) {
-            matchedRequirements.innerHTML = "";
-
-            matched.forEach(requirement => {
-                const item = document.createElement("div");
-                item.className = "skill-pill";
-                item.textContent = requirement.requirement || "Requirement";
-                matchedRequirements.appendChild(item);
-            });
-        }
-
-        if (unmatchedRequirements) {
-            unmatchedRequirements.innerHTML = "";
-
-            attention.forEach(requirement => {
-                const item = document.createElement("div");
-                item.className = "skill-pill";
-                item.textContent =
-                    (requirement.requirement || "Requirement") +
-                    " - " +
-                    (requirement.status || "UNASSESSED");
-                unmatchedRequirements.appendChild(item);
-            });
-        }
+        setEmptyState("resumeStrengthsEmpty", values.length === 0);
     }
 
-    function renderResults(data) {
+    function renderFeedbackList(containerId, emptyId, items) {
+        const container = document.getElementById(containerId);
+        const values = collectItems(items);
+
+        if (container) {
+            container.innerHTML = "";
+            values.forEach(function (item) {
+                container.appendChild(createElement("li", "", item));
+            });
+        }
+
+        setEmptyState(emptyId, values.length === 0);
+    }
+
+    function renderScore(score, explanation) {
+        const numericScore = Number(score);
+        const safeScore = Number.isFinite(numericScore)
+            ? Math.max(0, Math.min(100, Math.round(numericScore)))
+            : 0;
+
+        const scoreElement = document.getElementById("score");
+        if (scoreElement) {
+            scoreElement.textContent = String(safeScore);
+        }
+
+        const scoreRing = document.getElementById("scoreRing");
+        if (scoreRing) {
+            const degrees = safeScore * 3.6;
+            scoreRing.style.background =
+                "conic-gradient(var(--violet) 0deg, var(--violet) " +
+                degrees +
+                "deg, #e5e0d9 " +
+                degrees +
+                "deg)";
+        }
+
+        const coverageFill = document.getElementById("coverageFill");
+        if (coverageFill) {
+            coverageFill.style.width = safeScore + "%";
+        }
+
+        const explanationElement = document.getElementById("scoreExplanation");
+        if (explanationElement) {
+            explanationElement.textContent = text(
+                explanation,
+                "Resume strength based on the quality assessment."
+            );
+        }
+
+        return safeScore;
+    }
+
+    function renderResults(data, options) {
         const resultSection = document.getElementById("results");
+        const settings = options || {};
 
         if (resultSection) {
             resultSection.classList.add("active");
@@ -4244,35 +4357,40 @@ analyzeButton.addEventListener("click", async function () {
             resultSection.style.opacity = "1";
         }
 
-        data = data || {};
+        document.querySelectorAll(".result-card").forEach(function (card) {
+            card.classList.add("result-visible");
+        });
 
-        /* SCORE */
-        const score = Number(data.score || 0);
-        const scoreElement = document.getElementById("score");
-        if (scoreElement) {
-            scoreElement.textContent = Math.round(score) + "%";
-        }
+        hideLegacyRequirementUi();
 
-        /* RESUME STRENGTHS */
-        if (data.resumeStrengths && data.resumeStrengths.length > 0) {
-            renderList("strengths", "Resume Strengths", data.resumeStrengths);
-        }
+        const payload = data && typeof data === "object" ? data : {};
+        const mapped = {
+            score: payload.score,
+            scoreExplanation: payload.scoreExplanation,
+            resumeStrengths: Array.isArray(payload.resumeStrengths)
+                ? payload.resumeStrengths
+                : [],
+            needsAttention: Array.isArray(payload.needsAttention)
+                ? payload.needsAttention
+                : [],
+            jdTailoringTips: Array.isArray(payload.jdTailoringTips)
+                ? payload.jdTailoringTips
+                : []
+        };
 
-        /* NEEDS ATTENTION */
-        if (data.needsAttention && data.needsAttention.length > 0) {
-            renderList("attention", "Needs Attention", data.needsAttention);
-        }
+        const renderedScore = renderScore(mapped.score, mapped.scoreExplanation);
+        renderStrengths(mapped.resumeStrengths);
+        renderFeedbackList("needsAttention", "needsAttentionEmpty", mapped.needsAttention);
+        renderFeedbackList("jdTailoring", "jdTailoringEmpty", mapped.jdTailoringTips);
 
-        /* JD TAILORING TIPS */
-        if (data.jdTailoringTips && data.jdTailoringTips.length > 0) {
-            renderList("tailoring", "JD Tailoring", data.jdTailoringTips);
-        }
-
-        /* LEGACY COMPATIBILITY - HIDE REQUIREMENTS */
-        const reqContainer = document.getElementById("requirementsList");
-        if (reqContainer) {
-            reqContainer.style.display = "none";
-        }
+        console.log("Mapped result:", {
+            score: renderedScore,
+            scoreExplanation: mapped.scoreExplanation || "",
+            resumeStrengths: collectItems(mapped.resumeStrengths),
+            needsAttention: collectItems(mapped.needsAttention),
+            jdTailoringTips: collectItems(mapped.jdTailoringTips),
+            error: settings.error || null
+        });
     }
 
     window.renderResults = renderResults;
