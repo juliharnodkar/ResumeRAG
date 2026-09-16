@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ResuMatch � Know how well your resume fits the role</title>
+<title>ResuMatch ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¯ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¿ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ Know how well your resume fits the role</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -116,7 +116,8 @@ button {
     backdrop-filter: blur(16px);
 }
 
-\.brand {`r`n    margin-left: -28px;
+\.brand {
+    margin-left: -28px;
     display: flex;
     align-items: center;
     gap: 11px;
@@ -2114,7 +2115,9 @@ button {
 </style><style id="resumatch-logo-style">
 .resumatch-logo {
     display: block;
-    width: 210px;`r`n    height: auto;`r`n    max-height: 62px;
+    width: 210px;
+    height: auto;
+    max-height: 62px;
     object-fit: contain;
 }
 </style>
@@ -2174,14 +2177,14 @@ button {
 
         <p class="hero-copy">
             ResuMatch compares your resume against a job description,
-            identifies the skills you already demonstrate, and shows
+            identifies the requirements you already demonstrate, and shows
             exactly where your application has gaps.
         </p>
 
         <div class="hero-meta">
             <div class="meta-item">
                 <div class="meta-icon">?</div>
-                Skills matched
+                Requirements matched
             </div>
 
             <div class="meta-item">
@@ -2466,11 +2469,11 @@ We are looking for a Software Engineer with experience in Java, Spring Boot, RES
 
                 <div>
                     <div class="metric-label">
-                        Skill coverage
+                        Requirement coverage
                     </div>
 
                     <div class="coverage-title">
-                        What your resume covers
+                        What your resume can verify
                     </div>
                 </div>
 
@@ -2492,12 +2495,12 @@ We are looking for a Software Engineer with experience in Java, Spring Boot, RES
 
                 <div class="skills-section-header">
                     <span class="skills-dot matched-dot"></span>
-                    Skills matched
+                    Requirements matched
                 </div>
 
                 <div
                     class="skill-list"
-                    id="matchedSkills"
+                    id="matchedRequirements"
                 ></div>
 
             </div>
@@ -2506,12 +2509,12 @@ We are looking for a Software Engineer with experience in Java, Spring Boot, RES
 
                 <div class="skills-section-header">
                     <span class="skills-dot missing-dot"></span>
-                    Skills missing
+                    Requirements needing attention
                 </div>
 
                 <div
                     class="skill-list"
-                    id="missingSkills"
+                    id="unmatchedRequirements"
                 ></div>
 
             </div>
@@ -2566,31 +2569,6 @@ We are looking for a Software Engineer with experience in Java, Spring Boot, RES
 
     </div>
 
-    <div class="card evidence-card">
-
-        <div class="evidence-heading">
-
-            <div>
-                <div class="result-card-label">
-                    Resume evidence
-                </div>
-
-                <h3>Top 8 resume evidence</h3>
-            </div>
-
-            <div class="evidence-note">
-                Top matched skills
-            </div>
-
-        </div>
-
-        <div
-            class="evidence-grid"
-            id="skillEvidence"
-        ></div>
-
-    </div>
-
 </section>
 
 </section>
@@ -2598,7 +2576,7 @@ We are looking for a Software Engineer with experience in Java, Spring Boot, RES
 </main>
 
 <footer class="footer">
-    ResuMatch � Know how well your resume fits the role.
+    ResuMatch ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¯ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¿ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â½ Know how well your resume fits the role.
 </footer>
 
 </div>
@@ -2646,7 +2624,7 @@ resumeInput.addEventListener("change", async function () {
 
         resumeId = data.resumeId;
 
-        fileName.textContent = "? " + file.name;
+        fileName.textContent = "ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ " + file.name;
 
     } catch (error) {
 
@@ -2688,7 +2666,6 @@ uploadZone.addEventListener("drop", function (event) {
     resumeInput.dispatchEvent(new Event("change"));
 
 });
-
 jobDescription.addEventListener("input", function () {
 
     charCount.textContent = this.value.length;
@@ -2720,18 +2697,31 @@ analyzeButton.addEventListener("click", async function () {
 
     try {
 
-        const response = await fetch("/api/analyze", {
+        console.log("ANALYZE: sending request", {
+            resumeId: resumeId,
+            jobDescriptionLength: jd.length
+
+        });
+        const response = await fetch("/api/analyze-tailored", {
             method: "POST",
             body: formData
         });
 
-        const data = await response.json();
+        const raw = await response.text();
+
+        console.log("ANALYZE: raw response", raw);
 
         if (!response.ok) {
-            throw new Error(data.message || "Analysis failed.");
+            throw new Error("Analysis failed (HTTP " + response.status + "): " + raw);
         }
 
-        renderResults(data);
+        const data = JSON.parse(raw);
+
+        console.log("ANALYZE: parsed data", data);
+
+        window.renderResults(data);
+
+        console.log("ANALYZE: renderResults completed");
 
     } catch (error) {
 
@@ -2744,137 +2734,12 @@ analyzeButton.addEventListener("click", async function () {
 
     }
 
-});
 
-function renderResults(data) {
 
-    const score = Number(data.score || 0);
 
-    document.getElementById("score").textContent = score;
-
-    const degrees =
-        Math.max(0, Math.min(100, score)) * 3.6;
-
-    document.getElementById("scoreRing").style.background =
-        "conic-gradient(var(--violet) " +
-        degrees +
-        "deg, #403b55 " +
-        degrees +
-        "deg)";
-
-    document.getElementById("coverageFill").style.width =
-        Math.max(0, Math.min(100, score)) + "%";
-
-    const matched = data.matchedSkills || [];
-    const missing = data.missingSkills || [];
-
-    document.getElementById("matchedCount").textContent =
-        matched.length;
-
-    const matchedContainer =
-        document.getElementById("matchedSkills");
-
-    const missingContainer =
-        document.getElementById("missingSkills");
-
-    matchedContainer.innerHTML = "";
-    missingContainer.innerHTML = "";
-
-    matched.forEach(function (skill) {
-
-        const pill = document.createElement("span");
-
-        pill.className = "skill-pill matched";
-        pill.textContent = skill;
-
-        matchedContainer.appendChild(pill);
 
     });
-
-    missing.forEach(function (skill) {
-
-        const pill = document.createElement("span");
-
-        pill.className = "skill-pill missing";
-        pill.textContent = skill;
-
-        missingContainer.appendChild(pill);
-
-    });
-
-    document.getElementById("analysis").textContent =
-        data.analysis || "No analysis available.";
-
-    const recommendationContainer =
-        document.getElementById("recommendations");
-
-    recommendationContainer.innerHTML = "";
-
-    (data.recommendations || []).forEach(function (recommendation) {
-
-        const li = document.createElement("li");
-
-        li.textContent = recommendation;
-
-        recommendationContainer.appendChild(li);
-
-    });
-
-    const evidenceContainer =
-        document.getElementById("skillEvidence");
-
-    evidenceContainer.innerHTML = "";
-
-    const details = data.skillDetails || {};
-
-    Object.entries(details)
-        .slice(0, 8)
-        .forEach(function ([skill, evidence]) {
-
-            const item = document.createElement("div");
-
-            item.className = "evidence-item";
-
-            const skillElement =
-                document.createElement("div");
-
-            skillElement.className = "evidence-skill";
-            skillElement.textContent = skill;
-
-            const evidenceElement =
-                document.createElement("div");
-
-            evidenceElement.className = "evidence-text";
-
-            let text =
-                String(evidence || "Verified resume evidence");
-
-            if (text.length > 140) {
-                text = text.substring(0, 140) + "...";
-            }
-
-            evidenceElement.textContent = text;
-
-            item.appendChild(skillElement);
-            item.appendChild(evidenceElement);
-
-            evidenceContainer.appendChild(item);
-
-        });
-
-    results.classList.add("active");
-
-    setTimeout(function () {
-
-        results.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-
-    }, 100);
-}
 </script>
-
 <style>
 /* Keep all result-only cards invisible until analysis finishes */
 .result-card,
@@ -3741,7 +3606,6 @@ function renderResults(data) {
 
         const analysis = document.getElementById("analysis");
         const recommendations = document.getElementById("recommendations");
-        const evidence = document.getElementById("skillEvidence");
 
         if (analysis) {
             const card = analysis.closest(".result-card");
@@ -3753,10 +3617,10 @@ function renderResults(data) {
             if (card) cards.push(card);
         }
 
-        if (evidence) {
-            const card = evidence.closest(".evidence-card");
-            if (card) cards.push(card);
-        }
+
+
+
+
 
         return cards;
     }
@@ -3766,13 +3630,11 @@ function renderResults(data) {
             card.classList.remove("result-visible");
         });
     }
-
     function showResultCards() {
         getResultCards().forEach(function (card) {
             card.classList.add("result-visible");
         });
     }
-
     function setup() {
 
         hideResultCards();
@@ -3790,15 +3652,15 @@ function renderResults(data) {
                     hideResultCards();
                 }
 
-            });
 
+            });
             observer.observe(resultsElement, {
                 attributes: true,
                 attributeFilter: ["class"]
             });
-        }
     }
 
+    }
     if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", setup);
     } else {
@@ -3807,967 +3669,792 @@ function renderResults(data) {
 
 })();
 </script>
-<script>
+<script id="resumatch-domain-neutral-renderer">
 (function () {
 
-    function cleanText(value) {
+    function text(value, fallback) {
         if (value === null || value === undefined) {
-            return "";
+            return fallback || "";
         }
 
-        if (typeof value === "string") {
-            return value.trim();
-        }
-
-        return "";
+        const result = String(value).trim();
+        return result || (fallback || "");
     }
 
-    function getObjectText(obj) {
-
-        if (!obj || typeof obj !== "object") {
-            return "";
-        }
-
-        const possibleFields = [
-            "evidence",
-            "text",
-            "content",
-            "snippet",
-            "description",
-            "chunk"
-        ];
-
-        for (const field of possibleFields) {
-
-            const value = obj[field];
-
-            if (typeof value === "string" && value.trim()) {
-                return value.trim();
-            }
-        }
-
-        if (obj.document && typeof obj.document === "object") {
-
-            for (const field of possibleFields) {
-
-                const value = obj.document[field];
-
-                if (typeof value === "string" && value.trim()) {
-                    return value.trim();
-                }
-            }
-        }
-
-        return "";
+    function titleCase(value) {
+        return text(value)
+            .toLowerCase()
+            .replace(/_/g, " ")
+            .replace(/\b\w/g, function (c) {
+                return c.toUpperCase();
+            });
+    }
+    function statusClass(status) {
+        return text(status, "UNASSESSED")
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-");
     }
 
-    function getObjectSection(obj) {
+    function createElement(tag, className, content) {
+        const element = document.createElement(tag);
 
-        if (!obj || typeof obj !== "object") {
-            return "";
+        if (className) {
+            element.className = className;
         }
 
-        if (typeof obj.section === "string") {
-            return obj.section;
+        if (content !== undefined) {
+            element.textContent = content;
         }
 
-        if (obj.metadata && typeof obj.metadata === "object") {
-
-            const section =
-                obj.metadata.section ||
-                obj.metadata.source ||
-                obj.metadata.type;
-
-            if (typeof section === "string") {
-                return section;
-            }
-        }
-
-        if (obj.document &&
-            typeof obj.document === "object" &&
-            obj.document.metadata) {
-
-            const section =
-                obj.document.metadata.section ||
-                obj.document.metadata.source ||
-                obj.document.metadata.type;
-
-            if (typeof section === "string") {
-                return section;
-            }
-        }
-
-        return "";
+        return element;
     }
 
-    function findEvidenceText(value, depth) {
-
-        if (depth > 5 || value === null || value === undefined) {
-            return "";
-        }
-
-        if (typeof value === "string") {
-            const text = value.trim();
-
-            if (
-                text &&
-                text !== "[object Object]" &&
-                text.length > 2
-            ) {
-                return text;
-            }
-
-            return "";
-        }
-
-        if (Array.isArray(value)) {
-
-            for (const item of value) {
-
-                const found =
-                    findEvidenceText(item, depth + 1);
-
-                if (found) {
-                    return found;
-                }
-            }
-
-            return "";
-        }
-
-        if (typeof value === "object") {
-
-            const preferredFields = [
-                "evidence",
-                "text",
-                "content",
-                "snippet",
-                "chunk",
-                "pageContent",
-                "description",
-                "value"
-            ];
-
-            for (const field of preferredFields) {
-
-                if (value[field] !== undefined) {
-
-                    const found =
-                        findEvidenceText(
-                            value[field],
-                            depth + 1
-                        );
-
-                    if (found) {
-                        return found;
-                    }
-                }
-            }
-
-            for (const key of Object.keys(value)) {
-
-                if (
-                    key === "score" ||
-                    key === "distance" ||
-                    key === "metadata" ||
-                    key === "section"
-                ) {
-                    continue;
-                }
-
-                const found =
-                    findEvidenceText(
-                        value[key],
-                        depth + 1
-                    );
-
-                if (found) {
-                    return found;
-                }
-            }
-        }
-
-        return "";
+    function renderStatus(status) {
+        return createElement(
+            "span",
+            "domain-neutral-status " + statusClass(status),
+            titleCase(status)
+        );
     }
 
-    function findEvidenceSection(value, depth) {
-
-        if (depth > 5 || value === null || value === undefined) {
-            return "";
+    function renderExpression(expression) {
+        if (!expression) {
+            return null;
         }
 
-        if (Array.isArray(value)) {
-
-            for (const item of value) {
-
-                const found =
-                    findEvidenceSection(
-                        item,
-                        depth + 1
-                    );
-
-                if (found) {
-                    return found;
-                }
-            }
-
-            return "";
+        if (expression.name) {
+            return createElement(
+                "span",
+                "domain-neutral-expression-concept",
+                expression.name
+            );
         }
 
-        if (typeof value !== "object") {
-            return "";
-        }
+        if (Array.isArray(expression.children)) {
+            const wrapper = createElement(
+                "div",
+                "domain-neutral-expression-group"
+            );
 
-        const sectionFields = [
-            "section",
-            "resumeSection",
-            "sourceSection",
-            "category"
-        ];
+            const operator =
+                expression.type === "AllOf"
+                    ? "ALL"
+                    : expression.type === "AnyOf"
+                        ? "ANY"
+                        : null;
 
-        for (const field of sectionFields) {
-
-            if (
-                typeof value[field] === "string" &&
-                value[field].trim()
-            ) {
-                return value[field].trim();
-            }
-        }
-
-        if (value.metadata &&
-            typeof value.metadata === "object") {
-
-            const metadataSection =
-                findEvidenceSection(
-                    value.metadata,
-                    depth + 1
+            if (operator) {
+                wrapper.appendChild(
+                    createElement(
+                        "span",
+                        "domain-neutral-expression-operator",
+                        operator
+                    )
                 );
-
-            if (metadataSection) {
-                return metadataSection;
             }
-        }
 
-        if (value.document &&
-            typeof value.document === "object") {
+            const children = createElement(
+                "div",
+                "domain-neutral-expression-children"
+            );
 
-            const documentSection =
-                findEvidenceSection(
-                    value.document,
-                    depth + 1
-                );
+            expression.children.forEach(function (child) {
+                const rendered = renderExpression(child);
 
-            if (documentSection) {
-                return documentSection;
-            }
-        }
-
-        return "";
-    }
-
-    function findEvidenceSkill(value, fallback) {
-
-        if (!value || typeof value !== "object") {
-            return fallback;
-        }
-
-        const fields = [
-            "skill",
-            "name",
-            "key",
-            "requirement"
-        ];
-
-        for (const field of fields) {
-
-            if (
-                typeof value[field] === "string" &&
-                value[field].trim()
-            ) {
-                return value[field].trim();
-            }
-        }
-
-        return fallback;
-    }
-
-    function normalizeEvidence(details) {
-
-        const output = [];
-
-        if (!details) {
-            return output;
-        }
-
-        if (Array.isArray(details)) {
-
-            details.forEach(function (item) {
-
-                const skill =
-                    findEvidenceSkill(
-                        item,
-                        ""
-                    );
-
-                if (!skill) {
-                    return;
+                if (rendered) {
+                    children.appendChild(rendered);
                 }
 
-                output.push({
-                    skill: skill,
-                    evidence:
-                        findEvidenceText(
-                            item,
-                            0
-                        ),
-                    section:
-                        findEvidenceSection(
-                            item,
-                            0
-                        )
-                });
-
             });
-
-            return output.slice(0, 8);
+            wrapper.appendChild(children);
+            return wrapper;
         }
 
-        if (typeof details === "object") {
-
-            Object.entries(details).forEach(
-                function ([key, value]) {
-
-                    const skill =
-                        findEvidenceSkill(
-                            value,
-                            key
-                        );
-
-                    output.push({
-                        skill: skill,
-                        evidence:
-                            findEvidenceText(
-                                value,
-                                0
-                            ),
-                        section:
-                            findEvidenceSection(
-                                value,
-                                0
-                            )
-                    });
-
-                }
-            );
-        }
-
-        return output.slice(0, 8);
+        return null;
     }
 
-    function renderEvidence(details) {
-
-        const container =
-            document.getElementById("skillEvidence");
-
-        if (!container) {
-            return;
-        }
-
-        container.innerHTML = "";
-
-        const evidence =
-            normalizeEvidence(details);
-
-        if (evidence.length === 0) {
-
-            const empty =
-                document.createElement("div");
-
-            empty.className =
-                "evidence-empty";
-
-            empty.textContent =
-                "No individual resume evidence was returned.";
-
-            container.appendChild(empty);
-
-            return;
-        }
-
-        evidence.forEach(function (item, index) {
-
-            const card =
-                document.createElement("div");
-
-            card.className =
-                "evidence-item";
-
-            const number =
-                document.createElement("div");
-
-            number.className =
-                "evidence-index";
-
-            number.textContent =
-                String(index + 1).padStart(2, "0");
-
-            const skill =
-                document.createElement("div");
-
-            skill.className =
-                "evidence-skill";
-
-            skill.textContent =
-                item.skill;
-
-            const source =
-                document.createElement("div");
-
-            source.className =
-                "evidence-source";
-
-            source.textContent =
-                item.section ||
-                "Resume evidence";
-
-            const text =
-                document.createElement("div");
-
-            text.className =
-                "evidence-text";
-
-            text.textContent =
-                item.evidence ||
-                "This skill was verified from resume content.";
-
-            card.appendChild(number);
-            card.appendChild(skill);
-            card.appendChild(source);
-            card.appendChild(text);
-
-            container.appendChild(card);
-
-        });
-    }
-    function parseAnalysis(text) {
-
-        const source = String(text || "");
-
-        const summaryMatch =
-            source.match(
-                /1\.\s*MATCH SUMMARY([\s\S]*?)(?=2\.\s*GAPS|$)/i
-            );
-
-        const gapsMatch =
-            source.match(
-                /2\.\s*GAPS([\s\S]*?)(?=3\.\s*RECOMMENDATIONS|$)/i
-            );
-
-        const recommendationsMatch =
-            source.match(
-                /3\.\s*RECOMMENDATIONS([\s\S]*)/i
-            );
-
-        return {
-            summary:
-                summaryMatch
-                    ? summaryMatch[1].trim()
-                    : "The analysis did not return a match summary.",
-
-            gaps:
-                gapsMatch
-                    ? gapsMatch[1].trim()
-                    : "No specific skill gaps were identified.",
-
-            recommendations:
-                recommendationsMatch
-                    ? recommendationsMatch[1].trim()
-                    : "No additional recommendations were returned."
-        };
-    }
-
-    function renderStructuredAnalysis(text) {
-
-        const container =
-            document.getElementById("analysis");
-
-        if (!container) {
-            return;
-        }
-
-        const parsed = parseAnalysis(text);
-
-        container.innerHTML = "";
-
-        const wrapper =
-            document.createElement("div");
-
-        wrapper.className = "analysis-sections";
-
-        const sections = [
-            {
-                title: "Match summary",
-                text: parsed.summary,
-                className: ""
-            },
-            {
-                title: "Gaps",
-                text: parsed.gaps,
-                className: "gap"
-            },
-            {
-                title: "Next move",
-                text: parsed.recommendations,
-                className: "next"
-            }
-        ];
-
-        sections.forEach(function (section) {
-
-            const block =
-                document.createElement("div");
-
-            block.className =
-                "analysis-block " + section.className;
-
-            const title =
-                document.createElement("div");
-
-            title.className =
-                "analysis-block-title";
-
-            const dot =
-                document.createElement("span");
-
-            const titleText =
-                document.createTextNode(section.title);
-
-            title.appendChild(dot);
-            title.appendChild(titleText);
-
-            const body =
-                document.createElement("div");
-
-            body.className =
-                "analysis-block-text";
-
-            body.textContent =
-                section.text;
-
-            block.appendChild(title);
-            block.appendChild(body);
-
-            wrapper.appendChild(block);
-
-        });
-
-        container.appendChild(wrapper);
-    }
-
-    function recommendationForSkill(skill) {
-
-        const normalized =
-            String(skill || "").toLowerCase();
-
-        if (normalized.includes("spring boot")) {
-            return "If you have Spring Boot experience, surface the project or backend work where you used it and mention the framework explicitly.";
-        }
-
-        if (normalized.includes("postgres")) {
-            return "If you have PostgreSQL experience, make the database work visible by naming PostgreSQL alongside the relevant project, schema, or queries.";
-        }
-
-        if (normalized.includes("rest")) {
-            return "If you have built REST APIs, explicitly mention the endpoints, backend service, or integration work in the relevant project.";
-        }
-
-        if (normalized.includes("kubernetes")) {
-            return "If you have Kubernetes experience, identify the deployment, container orchestration, or infrastructure work where you used it.";
-        }
-
-        if (normalized.includes("aws")) {
-            return "If you have AWS experience, name the specific service and describe what you deployed or managed with it.";
-        }
-
-        if (normalized.includes("docker")) {
-            return "If you have Docker experience, connect it to a project and briefly state how you used containers.";
-        }
-
-        if (normalized.includes("typescript")) {
-            return "If you have TypeScript experience, make it explicit in the project where you used it rather than relying only on the general skills list.";
-        }
-
-        return "If you genuinely have experience with " +
-            skill +
-            ", add a concise, verifiable example of where you used it.";
-    }
-
-    function renderRecommendations(missingSkills, backendRecommendations) {
-
-        const container =
-            document.getElementById("recommendations");
-
-        if (!container) {
-            return;
-        }
-
-        container.innerHTML = "";
-
-        const skills =
-            Array.isArray(missingSkills)
-                ? missingSkills
-                : [];
-
-        if (skills.length === 0) {
-
-            const li =
-                document.createElement("li");
-
-            li.textContent =
-                "Your resume covers the recognized requirements. Focus on making the strongest evidence easy to find.";
-
-            container.appendChild(li);
-
-            return;
-        }
-
-        skills.forEach(function (skill) {
-
-            const li =
-                document.createElement("li");
-
-            li.textContent =
-                recommendationForSkill(skill);
-
-            container.appendChild(li);
-
-        });
-    }
-
-    function renderEvidence(details) {
-
-        const container =
-            document.getElementById("skillEvidence");
-
-        if (!container) {
-            return;
-        }
-
-        container.innerHTML = "";
-
-        const evidence =
-            normalizeEvidence(details);
-
-        if (evidence.length === 0) {
-
-            const empty =
-                document.createElement("div");
-
-            empty.className =
-                "evidence-empty";
-
-            empty.textContent =
-                "No individual evidence signals were returned.";
-
-            container.appendChild(empty);
-
-            return;
-        }
-
-        evidence.forEach(function (item, index) {
-
-            const card =
-                document.createElement("div");
-
-            card.className =
-                "evidence-item";
-
-            const number =
-                document.createElement("div");
-
-            number.className =
-                "evidence-index";
-
-            number.textContent =
-                String(index + 1).padStart(2, "0");
-
-            const skill =
-                document.createElement("div");
-
-            skill.className =
-                "evidence-skill";
-
-            skill.textContent =
-                item.skill;
-
-            const source =
-                document.createElement("div");
-
-            source.className =
-                "evidence-source";
-
-            source.textContent =
-                item.section || "Resume evidence";
-
-            const text =
-                document.createElement("div");
-
-            text.className =
-                "evidence-text";
-
-            text.textContent =
-                item.evidence ||
-                "Verified evidence for this matched skill.";
-
-            card.appendChild(number);
-            card.appendChild(skill);
-            card.appendChild(source);
-            card.appendChild(text);
-
-            container.appendChild(card);
-
-        });
-    }
-
-    /*
-     * Replace the original renderer with the improved
-     * result renderer.
-     */
-    window.renderResults = function (data) {
-
-        const score =
-            Number(data.score || 0);
-
-        const scoreElement =
-            document.getElementById("score");
-
-        if (scoreElement) {
-            scoreElement.textContent = score;
-        }
-
-        const degrees =
-            Math.max(0, Math.min(100, score)) * 3.6;
-
-        const ring =
-            document.getElementById("scoreRing");
-
-        if (ring) {
-
-            ring.style.background =
-                "conic-gradient(" +
-                "var(--violet) " +
-                degrees +
-                "deg, " +
-                "#e5e0d9 " +
-                degrees +
-                "deg)";
-        }
-
-        const coverage =
-            document.getElementById("coverageFill");
-
-        if (coverage) {
-            coverage.style.width =
-                Math.max(0, Math.min(100, score)) + "%";
-        }
-
-        const matched =
-            Array.isArray(data.matchedSkills)
-                ? data.matchedSkills
-                : [];
-
-        const missing =
-            Array.isArray(data.missingSkills)
-                ? data.missingSkills
-                : [];
-
-        const matchedCount =
-            document.getElementById("matchedCount");
-
-        if (matchedCount) {
-            matchedCount.textContent =
-                matched.length;
-        }
-
-        const matchedContainer =
-            document.getElementById("matchedSkills");
-
-        if (matchedContainer) {
-
-            matchedContainer.innerHTML = "";
-
-            matched.forEach(function (skill) {
-
-                const pill =
-                    document.createElement("span");
-
-                pill.className =
-                    "skill-pill matched";
-
-                pill.textContent =
-                    skill;
-
-                matchedContainer.appendChild(pill);
-
-            });
-        }
-
-        const missingContainer =
-            document.getElementById("missingSkills");
-
-        if (missingContainer) {
-
-            missingContainer.innerHTML = "";
-
-            missing.forEach(function (skill) {
-
-                const pill =
-                    document.createElement("span");
-
-                pill.className =
-                    "skill-pill missing";
-
-                pill.textContent =
-                    skill;
-
-                missingContainer.appendChild(pill);
-
-            });
-        }
-
-        renderStructuredAnalysis(data.analysis);
-
-        renderRecommendations(
-            missing,
-            data.recommendations
+    function renderEvidence(evidence) {
+        const container = createElement(
+            "div",
+            "domain-neutral-evidence"
         );
 
-        renderEvidence(data.skillDetails);
+        const heading = createElement(
+            "div",
+            "domain-neutral-subheading",
+            "Evidence"
+        );
 
-        const resultSection =
-            document.getElementById("results");
+        container.appendChild(heading);
+
+        if (!Array.isArray(evidence) || evidence.length === 0) {
+            container.appendChild(
+                createElement(
+                    "div",
+                    "domain-neutral-empty",
+                    "No supporting evidence was retrieved."
+                )
+            );
+
+            return container;
+        }
+
+        const list = createElement(
+            "div",
+            "domain-neutral-evidence-list"
+        );
+
+        evidence.forEach(function (item) {
+            if (!item) {
+                return;
+            }
+
+            const evidenceItem = createElement(
+                "div",
+                "domain-neutral-evidence-item"
+            );
+
+            const content =
+                item.text ||
+                item.content ||
+                item.evidence ||
+                "";
+
+            if (content) {
+                evidenceItem.appendChild(
+                    createElement(
+                        "div",
+                        "domain-neutral-evidence-text",
+                        content
+                    )
+                );
+            }
+
+            if (item.section) {
+                evidenceItem.appendChild(
+                    createElement(
+                        "div",
+                        "domain-neutral-evidence-source",
+                        item.section
+                    )
+                );
+            }
+
+            list.appendChild(evidenceItem);
+            });
+
+        container.appendChild(list);
+        return container;
+    }
+
+    function renderConcepts(concepts) {
+        if (!Array.isArray(concepts) || concepts.length === 0) {
+            return null;
+        }
+
+        const container = createElement(
+            "div",
+            "domain-neutral-concepts"
+        );
+
+        container.appendChild(
+            createElement(
+                "div",
+                "domain-neutral-subheading",
+                "Concepts"
+            )
+        );
+
+        const list = createElement(
+            "div",
+            "domain-neutral-concept-list"
+        );
+
+        concepts.forEach(function (concept) {
+            if (!concept) {
+                return;
+            }
+
+            const item = createElement(
+                "div",
+                "domain-neutral-concept"
+            );
+
+            const header = createElement(
+                "div",
+                "domain-neutral-concept-header"
+            );
+
+            header.appendChild(
+                createElement(
+                    "span",
+                    "domain-neutral-concept-name",
+                    text(concept.concept, "Unnamed concept")
+                )
+            );
+
+            header.appendChild(
+                renderStatus(concept.status)
+            );
+
+            item.appendChild(header);
+
+            if (Array.isArray(concept.evidence) &&
+                concept.evidence.length > 0) {
+
+                item.appendChild(
+                    renderEvidence(concept.evidence)
+                );
+            }
+
+            list.appendChild(item);
+            });
+
+        container.appendChild(list);
+        return container;
+    }
+
+    function renderExperience(requirement) {
+        const condition = requirement.experienceCondition;
+
+        if (!condition) {
+            return null;
+        }
+
+        const container = createElement(
+            "div",
+            "domain-neutral-experience"
+        );
+
+        container.appendChild(
+            createElement(
+                "div",
+                "domain-neutral-subheading",
+                "Experience"
+            )
+        );
+
+        const description =
+            condition.originalText ||
+            condition.description ||
+            "";
+
+        if (description) {
+            container.appendChild(
+                createElement(
+                    "div",
+                    "domain-neutral-experience-text",
+                    description
+                )
+            );
+        }
+
+        const verified =
+            requirement.experienceVerified === true;
+
+        container.appendChild(
+            createElement(
+                "span",
+                "domain-neutral-experience-status " +
+                    (verified ? "verified" : "unverified"),
+                verified
+                    ? "Experience verified"
+                    : "Experience not verified"
+            )
+        );
+
+        return container;
+    }
+
+    function renderRequirement(requirement, index) {
+        const card = createElement(
+            "article",
+            "domain-neutral-requirement-card"
+        );
+
+        const header = createElement(
+            "div",
+            "domain-neutral-requirement-header"
+        );
+
+        const title = createElement(
+            "div",
+            "domain-neutral-requirement-title",
+            text(
+                requirement.requirement,
+                "Requirement " + (index + 1)
+            )
+        );
+
+        header.appendChild(title);
+        header.appendChild(
+            renderStatus(requirement.status)
+        );
+
+        card.appendChild(header);
+
+        const metadata = createElement(
+            "div",
+            "domain-neutral-requirement-meta"
+        );
+
+        if (requirement.type) {
+            metadata.appendChild(
+                createElement(
+                    "span",
+                    "domain-neutral-meta-pill",
+                    titleCase(requirement.type)
+                )
+            );
+        }
+
+        if (requirement.importance) {
+            metadata.appendChild(
+                createElement(
+                    "span",
+                    "domain-neutral-meta-pill",
+                    titleCase(requirement.importance)
+                )
+            );
+        }
+
+        if (metadata.children.length > 0) {
+            card.appendChild(metadata);
+        }
+
+        const expression = renderExpression(
+            requirement.expression
+        );
+
+        if (expression) {
+            const expressionContainer = createElement(
+                "div",
+                "domain-neutral-expression"
+            );
+
+            expressionContainer.appendChild(
+                createElement(
+                    "div",
+                    "domain-neutral-subheading",
+                    "Requirement Logic"
+                )
+            );
+
+            expressionContainer.appendChild(expression);
+            card.appendChild(expressionContainer);
+        }
+
+        const concepts = renderConcepts(
+            requirement.concepts
+        );
+
+        if (concepts) {
+            card.appendChild(concepts);
+        }
+
+        if (Array.isArray(requirement.evidence) &&
+            requirement.evidence.length > 0) {
+
+            card.appendChild(
+                renderEvidence(requirement.evidence)
+            );
+        }
+
+        const experience = renderExperience(requirement);
+
+        if (experience) {
+            card.appendChild(experience);
+        }
+
+        return card;
+    }
+
+    function renderRequirements(data) {
+        let container =
+            document.getElementById("requirementsList");
+
+        if (!container) {
+            const resultSection =
+                document.getElementById("results");
+
+            if (!resultSection) {
+                return;
+            }
+
+            container = document.createElement("section");
+            container.id = "requirementsList";
+            container.className =
+                "domain-neutral-requirements";
+
+            resultSection.appendChild(container);
+        }
+
+        container.innerHTML = "";
+
+        const heading = createElement(
+            "div",
+            "domain-neutral-section-heading",
+            "Requirements"
+        );
+
+        container.appendChild(heading);
+
+        const requirements =
+            Array.isArray(data.requirements)
+                ? data.requirements
+                : [];
+
+        if (requirements.length === 0) {
+            container.appendChild(
+                createElement(
+                    "div",
+                    "domain-neutral-empty",
+                    "No requirements were extracted from the job description."
+                )
+            );
+
+            return;
+        }
+
+        requirements.forEach(function (requirement, index) {
+            if (requirement) {
+                container.appendChild(
+                    renderRequirement(
+                        requirement,
+                        index
+                    )
+                );
+            }
+        });
+    }
+
+    function renderList(containerId, headingText, items) {
+        const container =
+            document.getElementById(containerId);
+
+        if (!container) {
+            return;
+        }
+
+        container.innerHTML = "";
+
+        const heading = createElement(
+            "div",
+            "domain-neutral-section-heading",
+            headingText
+        );
+
+        container.appendChild(heading);
+
+        const values =
+            Array.isArray(items)
+                ? items.filter(function (item) {
+                    return text(item);
+                })
+                : [];
+
+        if (values.length === 0) {
+            container.appendChild(
+                createElement(
+                    "div",
+                    "domain-neutral-empty",
+                    "No items were returned."
+                )
+            );
+
+            return;
+        }
+
+        const list = createElement(
+            "ul",
+            "domain-neutral-list"
+        );
+
+        values.forEach(function (item) {
+            list.appendChild(
+                createElement(
+                    "li",
+                    "",
+                    text(item)
+                )
+            );
+        });
+
+        container.appendChild(list);
+    }    
+    function renderRequirementCoverage(data) {
+        const requirements = Array.isArray(data?.requirements)
+            ? data.requirements
+            : [];
+
+        const matched = requirements.filter(
+            r => r && r.status === "MATCHED"
+        );
+
+        const attention = requirements.filter(
+            r => r && r.status !== "MATCHED"
+        );
+
+        const matchedCount = document.getElementById("matchedCount");
+        const coverageFill = document.getElementById("coverageFill");
+        const matchedRequirements = document.getElementById("matchedRequirements");
+        const unmatchedRequirements = document.getElementById("unmatchedRequirements");
+
+        if (matchedCount) {
+            matchedCount.textContent = matched.length;
+        }
+
+        if (coverageFill) {
+            const score = Math.max(0, Math.min(100, Number(data?.score || 0)));
+            coverageFill.style.width = score + "%";
+        }
+
+        if (matchedRequirements) {
+            matchedRequirements.innerHTML = "";
+
+            matched.forEach(requirement => {
+                const item = document.createElement("div");
+                item.className = "skill-pill";
+                item.textContent = requirement.requirement || "Requirement";
+                matchedRequirements.appendChild(item);
+            });
+        }
+
+        if (unmatchedRequirements) {
+            unmatchedRequirements.innerHTML = "";
+
+            attention.forEach(requirement => {
+                const item = document.createElement("div");
+                item.className = "skill-pill";
+                item.textContent =
+                    (requirement.requirement || "Requirement") +
+                    " - " +
+                    (requirement.status || "UNASSESSED");
+                unmatchedRequirements.appendChild(item);
+            });
+        }
+    }
+
+    function renderResults(data) {
+        const resultSection = document.getElementById("results");
 
         if (resultSection) {
             resultSection.classList.add("active");
+            resultSection.style.visibility = "visible";
+            resultSection.style.opacity = "1";
         }
 
-        setTimeout(function () {
+        data = data || {};
 
-            if (resultSection) {
+        /* SCORE */
+        const score = Number(data.score || 0);
+        const scoreElement = document.getElementById("score");
+        if (scoreElement) {
+            scoreElement.textContent = Math.round(score) + "%";
+        }
 
-                resultSection.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start"
-                });
+        /* RESUME STRENGTHS */
+        if (data.resumeStrengths && data.resumeStrengths.length > 0) {
+            renderList("strengths", "Resume Strengths", data.resumeStrengths);
+        }
 
-            }
+        /* NEEDS ATTENTION */
+        if (data.needsAttention && data.needsAttention.length > 0) {
+            renderList("attention", "Needs Attention", data.needsAttention);
+        }
 
-        }, 100);
-    };
+        /* JD TAILORING TIPS */
+        if (data.jdTailoringTips && data.jdTailoringTips.length > 0) {
+            renderList("tailoring", "JD Tailoring", data.jdTailoringTips);
+        }
+
+        /* LEGACY COMPATIBILITY - HIDE REQUIREMENTS */
+        const reqContainer = document.getElementById("requirementsList");
+        if (reqContainer) {
+            reqContainer.style.display = "none";
+        }
+    }
+
+    window.renderResults = renderResults;
 
 })();
 </script>
-<script id="resumatch-analysis-skill-script">
-(function () {
-    function enhanceSkillText() {
-        const candidates = document.querySelectorAll(
-            ".analysis-sections p, .analysis-sections div, .analysis-sections span"
-        );
 
-        candidates.forEach(function (el) {
-            if (el.dataset.skillEnhanced === "true") return;
-            if (el.children.length > 0) return;
+<style>
+.domain-neutral-requirements {
+    margin-top: 32px;
+}
 
-            const text = el.textContent.trim();
+.domain-neutral-section-heading {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
 
-            let label = null;
-            let type = null;
-            let skillsText = null;
+.domain-neutral-requirement-card {
+    padding: 20px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(128, 128, 128, 0.22);
+    border-radius: 14px;
+}
 
-            if (text.startsWith("Verified matched skills:")) {
-                label = "Verified matched skills";
-                type = "matched";
-                skillsText = text.substring("Verified matched skills:".length).trim();
-            } else if (text.startsWith("Missing verified skills:")) {
-                label = "Missing verified skills";
-                type = "missing";
-                skillsText = text.substring("Missing verified skills:".length).trim();
-            }
+.domain-neutral-requirement-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
 
-            if (!label || !skillsText) return;
+.domain-neutral-requirement-title {
+    font-size: 17px;
+    font-weight: 600;
+}
 
-            const skills = skillsText
-                .split(",")
-                .map(function (skill) {
-                    return skill.trim();
-                })
-                .filter(Boolean);
+.domain-neutral-status,
+.domain-neutral-meta-pill,
+.domain-neutral-experience-status {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 4px 9px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
 
-            if (!skills.length) return;
+.domain-neutral-status {
+    border: 1px solid rgba(128, 128, 128, 0.25);
+}
 
-            const fragment = document.createDocumentFragment();
+.domain-neutral-status.matched,
+.domain-neutral-experience-status.verified {
+    background: rgba(46, 125, 50, 0.10);
+}
 
-            const labelEl = document.createElement("span");
-            labelEl.className = "analysis-skill-label";
-            labelEl.textContent = label;
-            fragment.appendChild(labelEl);
+.domain-neutral-status.partial {
+    background: rgba(245, 158, 11, 0.10);
+}
 
-            const box = document.createElement("div");
-            box.className = "analysis-skill-box " + type;
+.domain-neutral-status.missing,
+.domain-neutral-experience-status.unverified {
+    background: rgba(220, 38, 38, 0.10);
+}
 
-            skills.forEach(function (skill) {
-                const token = document.createElement("span");
-                token.className = "analysis-skill-token";
-                token.textContent = skill;
-                box.appendChild(token);
-            });
+.domain-neutral-status.unassessed {
+    background: rgba(128, 128, 128, 0.10);
+}
 
-            fragment.appendChild(box);
+.domain-neutral-requirement-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
 
-            el.replaceChildren(fragment);
-            el.dataset.skillEnhanced = "true";
-        });
-    }
+.domain-neutral-meta-pill {
+    border: 1px solid rgba(128, 128, 128, 0.20);
+}
 
-    function startSkillEnhancement() {
-        enhanceSkillText();
+.domain-neutral-subheading {
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0.75;
+}
 
-        const observer = new MutationObserver(function () {
-            enhanceSkillText();
-        });
+.domain-neutral-expression,
+.domain-neutral-concepts,
+.domain-neutral-evidence,
+.domain-neutral-experience {
+    margin-top: 18px;
+}
 
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true
-        });
-    }
+.domain-neutral-expression-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
 
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", startSkillEnhancement);
-    } else {
-        startSkillEnhancement();
-    }
-})();
-</script></body>
+.domain-neutral-expression-operator {
+    flex: 0 0 auto;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    border: 1px solid rgba(128, 128, 128, 0.22);
+}
+
+.domain-neutral-expression-children {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.domain-neutral-expression-concept {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(128, 128, 128, 0.20);
+}
+
+.domain-neutral-concept-list,
+.domain-neutral-evidence-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.domain-neutral-concept {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(128, 128, 128, 0.16);
+}
+
+.domain-neutral-concept-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.domain-neutral-concept-name {
+    font-weight: 600;
+}
+
+.domain-neutral-evidence-item {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(128, 128, 128, 0.14);
+}
+
+.domain-neutral-evidence-text {
+    line-height: 1.55;
+}
+
+.domain-neutral-evidence-source {
+    margin-top: 7px;
+    font-size: 12px;
+    opacity: 0.60;
+}
+
+.domain-neutral-experience-text {
+    margin-bottom: 8px;
+}
+
+.domain-neutral-list {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.domain-neutral-list li {
+    margin-bottom: 8px;
+}
+
+.domain-neutral-empty {
+    opacity: 0.65;
+    font-size: 14px;
+}
+</style>
+</body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

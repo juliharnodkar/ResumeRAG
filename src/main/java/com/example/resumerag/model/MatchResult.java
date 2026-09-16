@@ -8,6 +8,8 @@ public record MatchResult(
         List<String> missingSkills,
         String analysis,
         List<String> recommendations,
-        List<SkillMatch> skillDetails
+        List<SkillMatch> skillDetails,
+        List<RequirementMatch> requirements,
+        List<String> nextSteps
 ) {
 }

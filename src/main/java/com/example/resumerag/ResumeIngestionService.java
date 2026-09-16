@@ -27,6 +27,7 @@ public class ResumeIngestionService {
         List<Document> chunks = new ArrayList<>();
         for (Document document : buildDocuments(resumeText, resumeId)) chunks.addAll(splitter.split(List.of(document)));
         if (chunks.isEmpty()) throw new IllegalArgumentException("Resume did not produce any searchable content.");
+        System.out.println("INGESTION: processed chunks = " + chunks.size());
         vectorStore.add(chunks);
         return resumeId;
     }

@@ -63,14 +63,39 @@ public final class SkillRegistry {
     }
 
     public static boolean contains(String text, String canonical) {
-        if (text == null || text.isBlank()) return false;
-        String normalized = normalize(text);
-        for (String alias : aliasesFor(canonical)) {
-            String a = normalize(alias);
-            Pattern pattern = patternForNormalizedAlias(a, canonical);
-            if (pattern.matcher(normalized).find()) return true;
+        if (text == null || text.isBlank() || canonical == null || canonical.isBlank()) {
+            return false;
         }
+
+        if (!SKILLS.containsKey(canonical)) {
+            return false;
+        }
+
+        String normalized = normalize(text);
+
+        for (String alias : aliasesFor(canonical)) {
+            String normalizedAlias = normalize(alias);
+
+            if (patternForAlias(canonical, normalizedAlias).matcher(normalized).find()) {
+                return true;
+            }
+        }
+
         return false;
+    }
+
+    public static String canonicalize(String text) {
+        if (text == null || text.isBlank()) {
+            return null;
+        }
+
+        for (String canonical : SKILLS.keySet()) {
+            if (contains(text, canonical)) {
+                return canonical;
+            }
+        }
+
+        return null;
     }
 
     public static String normalize(String text) {
@@ -81,19 +106,38 @@ public final class SkillRegistry {
     }
 
     public static Pattern patternForCanonical(String canonical) {
-        return Pattern.compile(patternForNormalizedAlias(normalize(canonical), canonical).pattern());
+        if (!SKILLS.containsKey(canonical)) {
+            return Pattern.compile("(?!)");
+        }
+
+        return Pattern.compile(
+                patternForAlias(canonical, normalize(canonical)).pattern()
+        );
     }
 
-    private static Pattern patternForNormalizedAlias(String alias, String canonical) {
-        if (canonical.equals("C")) {
+    private static Pattern patternForAlias(String canonical, String alias) {
+        if ("C".equals(canonical)) {
             return Pattern.compile("(?<![a-z0-9])c(?![a-z0-9#+])");
         }
-        if (canonical.equals("C++")) {
+
+        if ("C++".equals(canonical)) {
+            if ("cpp".equals(alias) || "c plus plus".equals(alias)) {
+                return Pattern.compile("(?<![a-z0-9])" + Pattern.quote(alias) + "(?![a-z0-9])");
+            }
+
             return Pattern.compile("(?<![a-z0-9])c\\+\\+(?![a-z0-9])");
         }
-        return Pattern.compile("(?<![a-z0-9])" + Pattern.quote(alias) + "(?![a-z0-9])");
+
+        if ("C#".equals(canonical)) {
+            if ("csharp".equals(alias) || "c sharp".equals(alias)) {
+                return Pattern.compile("(?<![a-z0-9])" + Pattern.quote(alias) + "(?![a-z0-9])");
+            }
+
+            return Pattern.compile("(?<![a-z0-9])c#(?![a-z0-9])");
+        }
+
+        return Pattern.compile(
+                "(?<![a-z0-9])" + Pattern.quote(alias) + "(?![a-z0-9])"
+        );
     }
 }
-
-
-
