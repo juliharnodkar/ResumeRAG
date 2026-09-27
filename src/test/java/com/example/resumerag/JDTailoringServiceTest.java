@@ -126,8 +126,10 @@ class JDTailoringServiceTest {
         assertEquals(1, tips.size());
         String tip = tips.get(0);
 
-        assertTrue(tip.contains("not explicit") || tip.contains("not explicitly") || tip.contains("state it clearly"),
+        assertTrue(tip.contains("not explicitly") || tip.contains("state it clearly"),
                 "PARTIAL tip must say evidence is not explicit or ask to state it clearly: " + tip);
+        assertTrue(tip.contains("The JD requires Docker"), "PARTIAL tip must contain the actual requirement: " + tip);
+        assertFalse(tip.contains("relevant section"), "Placeholder 'relevant section' must NEVER be rendered: " + tip);
         assertFalse(tip.startsWith("Add "),
                 "PARTIAL tip must NOT start with 'Add': " + tip);
     }
@@ -214,8 +216,9 @@ class JDTailoringServiceTest {
         int separator = tip.indexOf(": ");
         assertTrue(separator > 0, tip);
         assertNotEquals(tip.substring(0, separator), tip.substring(separator + 2), tip);
-        assertTrue(tip.toLowerCase().contains("if applicable"), tip);
-        assertTrue(tip.toLowerCase().contains("not explicitly"), tip);
+        assertTrue(tip.startsWith("Clarify"), "EXPERIENCE NOT_EVIDENCED must start with 'Clarify': " + tip);
+        assertTrue(tip.toLowerCase().contains("not evidenced") || tip.toLowerCase().contains("not explicitly"),
+                "Body must indicate the responsibility is missing: " + tip);
         assertFalse(tip.substring(tip.indexOf(": ") + 2).toLowerCase()
                 .contains("front-desk check-in/check-out"), tip);
     }
@@ -246,6 +249,137 @@ class JDTailoringServiceTest {
         assertTrue(tip.toLowerCase().contains("if"));
         assertFalse(tip.contains("Your JES project demonstrates Kubernetes"));
         assertFalse(tip.toLowerCase().contains("you used kubernetes"));
+    }
+
+
+
+
+    @Test
+    void tailoringTipFormatsExperienceTitleConcisely() {
+        JDTailoringService service = service();
+        RequirementMatch exp = new RequirementMatch(
+                "Improve accessibility and performance",
+                RequirementType.EXPERIENCE,
+                RequirementImportance.HIGH,
+                RequirementStatus.NOT_EVIDENCED,
+                new RequirementExpression.Concept("Improve accessibility and performance"),
+                List.of(),
+                List.of(),
+                null,
+                false
+        );
+        List<String> tips = service.generateTailoringTips(
+                List.of(exp), List.of(), List.of(), "JD"
+        );
+        assertTrue(tips.get(0).startsWith("Clarify accessibility and performance experience:"),
+                "EXPERIENCE NOT_EVIDENCED title must use 'Clarify', got: " + tips.get(0));
+    }
+
+    @Test
+    void tailoringTipFormatsDevelopTitleConcisely() {
+        JDTailoringService service = service();
+        RequirementMatch exp = new RequirementMatch(
+                "Develop reusable UI components",
+                RequirementType.EXPERIENCE,
+                RequirementImportance.HIGH,
+                RequirementStatus.NOT_EVIDENCED,
+                new RequirementExpression.Concept("Develop reusable UI components"),
+                List.of(),
+                List.of(),
+                null,
+                false
+        );
+        List<String> tips = service.generateTailoringTips(
+                List.of(exp), List.of(), List.of(), "JD"
+        );
+        assertTrue(tips.get(0).startsWith("Clarify reusable UI components experience:"),
+                "EXPERIENCE NOT_EVIDENCED title must use 'Clarify', got: " + tips.get(0));
+    }
+
+    @Test
+    void tailoringTipFormatsBuildTitleConcisely() {
+        JDTailoringService service = service();
+        RequirementMatch exp = new RequirementMatch(
+                "Build responsive web applications",
+                RequirementType.EXPERIENCE,
+                RequirementImportance.HIGH,
+                RequirementStatus.NOT_EVIDENCED,
+                new RequirementExpression.Concept("Build responsive web applications"),
+                List.of(),
+                List.of(),
+                null,
+                false
+        );
+        List<String> tips = service.generateTailoringTips(
+                List.of(exp), List.of(), List.of(), "JD"
+        );
+        assertTrue(tips.get(0).startsWith("Clarify responsive web applications experience:"),
+                "EXPERIENCE NOT_EVIDENCED title must use 'Clarify', got: " + tips.get(0));
+    }
+
+    @Test
+    void tailoringTipFormatsUseTitleConcisely() {
+        JDTailoringService service = service();
+        RequirementMatch exp = new RequirementMatch(
+                "Use Next.js",
+                RequirementType.EXPERIENCE,
+                RequirementImportance.HIGH,
+                RequirementStatus.NOT_EVIDENCED,
+                new RequirementExpression.Concept("Use Next.js"),
+                List.of(),
+                List.of(),
+                null,
+                false
+        );
+        List<String> tips = service.generateTailoringTips(
+                List.of(exp), List.of(), List.of(), "JD"
+        );
+        assertTrue(tips.get(0).startsWith("Clarify Next.js experience:"),
+                "EXPERIENCE NOT_EVIDENCED title must use 'Clarify', got: " + tips.get(0));
+    }
+
+    @Test
+    void skillNotEvidencedUsesAddTitleWithRawLabel() {
+        JDTailoringService service = service();
+        RequirementMatch skill = new RequirementMatch(
+                "TypeScript",
+                RequirementType.SKILL,
+                RequirementImportance.HIGH,
+                RequirementStatus.NOT_EVIDENCED,
+                new RequirementExpression.Concept("TypeScript"),
+                List.of(),
+                List.of(),
+                null,
+                false
+        );
+        List<String> tips = service.generateTailoringTips(
+                List.of(skill), List.of(), List.of(), "JD"
+        );
+        assertTrue(tips.get(0).startsWith("Add TypeScript if applicable:"),
+                "SKILL NOT_EVIDENCED title must be 'Add TypeScript if applicable:', got: " + tips.get(0));
+        assertFalse(tips.get(0).contains("experience"),
+                "SKILL title must NOT append 'experience', got: " + tips.get(0));
+    }
+
+    @Test
+    void nextJsSkillNotEvidencedUsesAddTitle() {
+        JDTailoringService service = service();
+        RequirementMatch skill = new RequirementMatch(
+                "Next.js",
+                RequirementType.SKILL,
+                RequirementImportance.HIGH,
+                RequirementStatus.NOT_EVIDENCED,
+                new RequirementExpression.Concept("Next.js"),
+                List.of(),
+                List.of(),
+                null,
+                false
+        );
+        List<String> tips = service.generateTailoringTips(
+                List.of(skill), List.of(), List.of(), "JD"
+        );
+        assertTrue(tips.get(0).startsWith("Add Next.js if applicable:"),
+                "SKILL NOT_EVIDENCED title must be 'Add Next.js if applicable:', got: " + tips.get(0));
     }
 
     @Test

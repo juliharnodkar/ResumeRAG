@@ -88,35 +88,69 @@ public class JDTailoringService {
     }
 
     private String buildTip(RequirementMatch req, ResumeEvidenceSnapshot snapshot) {
-        String label = label(req);
+        String originalLabel = label(req);
+        String titleLabel = formatTitleLabel(req);
         String location = locationFromEvidence(req, snapshot);
 
         return switch (req.status()) {
             case MATCHED -> location == null
-                    ? title("Highlight", label, "")
+                    ? title("Highlight", titleLabel, "")
                     + ": The resume already provides evidence. Keep the strongest related bullet easy to find."
-                    : title("Highlight", label, "")
-                    + ": The resume already provides evidence in " + location
+                    : title("Highlight", titleLabel, "")
+                    + ": The resume already provides evidence in the " + location
                     + ". Consider leading with the strongest related bullet.";
-            case PARTIAL -> location == null
-                    ? title("Clarify", label, "")
-                    + ": Related evidence exists, but the specific responsibility is not explicitly stated. If you have this experience, name it in the relevant resume section and briefly describe what you did; do not add it otherwise."
-                    : title("Clarify", label, "")
-                    + ": Your " + location
-                    + " is relevant, but the specific responsibility is not explicitly stated. If you have this experience, name it there and briefly describe what you did.";
-            case NOT_EVIDENCED -> location == null
-                    ? title("Add", label, "if applicable")
-                    + ": This responsibility is not explicitly evidenced on your resume. If you have genuinely performed it, add the specific responsibility in the relevant section; do not add it otherwise."
-                    : title("Add", label, "if applicable")
-                    + ": Your " + location
-                    + " demonstrates related work, but the specific responsibility is not explicitly stated. If you handled it, add the responsibility; do not add it otherwise.";
+            case PARTIAL -> {
+                String reqText = req.requirement() != null ? req.requirement().trim() : originalLabel;
+                String evText = "related experience";
+                if (req.evidence() != null && !req.evidence().isEmpty() && req.evidence().get(0) != null && req.evidence().get(0).text() != null) {
+                    evText = req.evidence().get(0).text().trim();
+                }
+                yield location == null
+                    ? title("Clarify", titleLabel, "")
+                    + ": The JD requires " + reqText + ". Your resume shows " + evText + ", but the specific responsibility is not explicitly stated. If you have this experience, clarify it; do not add it otherwise."
+                    : title("Clarify", titleLabel, "")
+                    + ": The JD requires " + reqText + ". Your resume shows " + evText + " in the " + location + ", but the specific responsibility is not explicitly stated. If you have this experience, clarify it; do not add it otherwise.";
+            }
+            case NOT_EVIDENCED -> {
+                boolean isResponsibility = req.type() == com.example.resumerag.model.RequirementType.EXPERIENCE
+                        || req.type() == com.example.resumerag.model.RequirementType.OTHER;
+                if (isResponsibility) {
+                    yield location == null
+                        ? title("Clarify", titleLabel, "")
+                        + ": The JD requires this responsibility but it is not evidenced on your resume. If you have this experience, add it explicitly; do not invent it otherwise."
+                        : title("Clarify", titleLabel, "")
+                        + ": Evidence in the " + location + " shows related work, but this specific responsibility is not explicitly stated. If you handled it, clarify it; do not add it otherwise.";
+                } else {
+                    yield location == null
+                        ? title("Add", originalLabel, "if applicable")
+                        + ": This skill is not explicitly mentioned on your resume. If you have it, add it where relevant; do not add it otherwise."
+                        : title("Add", originalLabel, "if applicable")
+                        + ": Evidence in the " + location + " demonstrates related work, but " + originalLabel + " is not explicitly stated. If you have this skill, add it; do not add it otherwise.";
+                }
+            }
             default -> null;
         };
     }
 
+
+    private static String formatTitleLabel(RequirementMatch req) {
+        String label = label(req);
+        if (req.type() == com.example.resumerag.model.RequirementType.EXPERIENCE) {
+            String pattern = "(?i)^(?:(?:develop|build|improve|manage|design|ensure|lead|create|maintain|support|implement|drive|work|experience|knowledge|ability|responsible|tasked|demonstrate|perform|handle|provide|collaborate|assist|execute|oversee|analyze|evaluate|test|deploy|architect|write|review|use)(?:s|ed|ing)?(?:\\s+(?:and|or)\\s+(?:develop|build|improve|manage|design|ensure|lead|create|maintain|support|implement|drive|work|experience|knowledge|ability|responsible|tasked|demonstrate|perform|handle|provide|collaborate|assist|execute|oversee|analyze|evaluate|test|deploy|architect|write|review|use)(?:s|ed|ing)?)?)\\b\\s*(?:with\\s+|on\\s+|to\\s+|for\\s+|of\\s+|in\\s+)?";
+            String stripped = label.replaceFirst(pattern, "").trim();
+            if (!stripped.isEmpty()) {
+                if (!stripped.toLowerCase().endsWith("experience")) {
+                    stripped += " experience";
+                }
+                return stripped;
+            }
+        }
+        return label;
+    }
+
     private static String title(String action, String label, String suffix) {
         String cleanLabel = label == null ? "this requirement" : label.trim();
-        int maximumLabelLength = Math.max(12, 46 - action.length() - suffix.length());
+        int maximumLabelLength = Math.max(12, 70 - action.length() - suffix.length());
         if (cleanLabel.length() > maximumLabelLength) {
             cleanLabel = cleanLabel.substring(0, maximumLabelLength - 1).trim() + "…";
         }
