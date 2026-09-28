@@ -110,7 +110,7 @@ public class JobRequirementExtractionService {
                 try {
                     recoverIncompleteItem(node);
                     JobRequirement requirement = parseRequirement(node);
-                    if (requirement != null) {
+                    if (requirement != null && !isSectionHeaderLabel(requirement.originalText())) {
                         extracted.add(requirement);
                     }
                 } catch (Exception parseEx) {
@@ -481,5 +481,27 @@ public class JobRequirementExtractionService {
         return valueText == null || valueText.isBlank()
                 ? null
                 : valueText.trim();
+    }
+
+    /**
+     * Detect JD section headers that the LLM may extract as requirement names.
+     * These are classification labels (e.g., "PREFERRED", "REQUIRED"), not
+     * actual skills or experience requirements.
+     */
+    private static boolean isSectionHeaderLabel(String text) {
+        if (text == null || text.isBlank()) {
+            return false;
+        }
+        String normalized = text.toLowerCase(java.util.Locale.ROOT)
+                .replaceAll("[^a-z0-9 ]", "")
+                .trim();
+        return normalized.matches(
+                "preferred|required|nice to have|bonus|desired|mandatory"
+                + "|minimum|optional|requirements|qualifications"
+                + "|responsibilities|duties|technical skills"
+                + "|preferred qualifications|required qualifications"
+                + "|minimum qualifications|desired qualifications"
+                + "|about the role|about us|who we are"
+        );
     }
 }

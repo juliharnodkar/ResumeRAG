@@ -44,6 +44,10 @@ public class ResumeIngestionService {
                 addDocument(documents, currentText, resumeId, currentSection, currentProject);
                 currentText.setLength(0); currentSection = normalizeSection(line); currentProject = null; continue;
             }
+            if (!"Education".equalsIgnoreCase(currentSection) && isLikelyEducationEntry(line)) {
+                addDocument(documents, currentText, resumeId, currentSection, currentProject);
+                currentText.setLength(0); currentSection = "Education"; currentProject = null;
+            }
             if ("Projects".equalsIgnoreCase(currentSection) && isLikelyProjectHeading(line)) {
                 addDocument(documents, currentText, resumeId, currentSection, currentProject);
                 currentText.setLength(0); currentProject = cleanProjectName(line); currentText.append(line).append(' '); continue;
@@ -60,7 +64,29 @@ public class ResumeIngestionService {
         if (line.endsWith(".")) return false;
         int words = line.trim().split("\\s+").length;
         if (words > 14) return false;
+        if (isLikelyEducationEntry(line)) return false;
         return line.contains("|") || line.contains("—") || line.contains("–") || Character.isUpperCase(line.charAt(0));
+    }
+
+    /**
+     * Reject lines that look like education entries so they are not mistaken
+     * for project headings. Education entries share formatting cues with
+     * project headings (em-dashes, uppercase starts, pipe separators) but
+     * contain degree-related keywords that projects almost never use.
+     */
+    private boolean isLikelyEducationEntry(String line) {
+        String lower = line.toLowerCase(java.util.Locale.ROOT);
+        return lower.contains("b.tech") || lower.contains("m.tech")
+                || lower.contains("bachelor") || lower.contains("master")
+                || lower.contains("b.sc") || lower.contains("m.sc")
+                || lower.contains("b.s.") || lower.contains("m.s.")
+                || lower.contains("bba") || lower.contains("mba")
+                || lower.contains("b.e.") || lower.contains("m.e.")
+                || lower.contains("b.a.") || lower.contains("m.a.")
+                || lower.contains("ph.d") || lower.contains("phd")
+                || lower.contains("diploma") || lower.contains("associate degree")
+                || lower.contains("university") || lower.contains("college")
+                || lower.contains("institute of technology");
     }
 
     private String cleanProjectName(String line) {

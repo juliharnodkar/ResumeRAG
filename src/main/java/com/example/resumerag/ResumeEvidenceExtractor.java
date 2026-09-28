@@ -65,7 +65,15 @@ final class ResumeEvidenceExtractor {
         boolean hasEducation = containsIgnoreCase(fullText, "education")
                 || containsIgnoreCase(fullText, "bachelor")
                 || containsIgnoreCase(fullText, "b.sc")
-                || containsIgnoreCase(fullText, "master");
+                || containsIgnoreCase(fullText, "b.tech")
+                || containsIgnoreCase(fullText, "m.tech")
+                || containsIgnoreCase(fullText, "b.e.")
+                || containsIgnoreCase(fullText, "m.e.")
+                || containsIgnoreCase(fullText, "bba")
+                || containsIgnoreCase(fullText, "mba")
+                || containsIgnoreCase(fullText, "diploma")
+                || containsIgnoreCase(fullText, "master")
+                || hasEducationSectionMetadata(chunks);
         boolean educationComplete = hasEducation && hasDates
                 && (containsIgnoreCase(fullText, "university")
                 || containsIgnoreCase(fullText, "college")
@@ -165,18 +173,53 @@ final class ResumeEvidenceExtractor {
         );
     }
 
+    /**
+     * Concatenate chunks into a single text, inserting newlines between chunks
+     * from different sections. This prevents cross-section text merging that
+     * causes education text to appear inside experience highlights.
+     */
     private static String concatenate(List<Document> chunks) {
         StringBuilder builder = new StringBuilder();
+        String previousSection = null;
         for (Document chunk : chunks) {
             if (chunk == null || chunk.getText() == null || chunk.getText().isBlank()) {
                 continue;
             }
+            String currentSection = chunk.getMetadata() == null ? null
+                    : chunk.getMetadata().get("section") == null ? null
+                    : String.valueOf(chunk.getMetadata().get("section"));
             if (!builder.isEmpty()) {
-                builder.append(' ');
+                // Use newline between different sections so experienceHighlights()
+                // does not merge Education text with Project/Experience text.
+                boolean sectionChanged = currentSection != null
+                        && previousSection != null
+                        && !currentSection.equalsIgnoreCase(previousSection);
+                builder.append(sectionChanged ? '\n' : ' ');
             }
             builder.append(chunk.getText().trim());
+            if (currentSection != null) {
+                previousSection = currentSection;
+            }
         }
         return builder.toString();
+    }
+
+    /**
+     * Check whether any chunk has section metadata indicating Education.
+     * The section heading text "Education" is consumed by ingestion and not
+     * included in chunk text, so this metadata check is necessary.
+     */
+    private static boolean hasEducationSectionMetadata(List<Document> chunks) {
+        for (Document chunk : chunks) {
+            if (chunk == null || chunk.getMetadata() == null) {
+                continue;
+            }
+            Object section = chunk.getMetadata().get("section");
+            if (section != null && "Education".equalsIgnoreCase(String.valueOf(section).trim())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static List<String> detectSections(List<Document> chunks, String fullText) {

@@ -114,6 +114,28 @@ public class JDTailoringService {
             case NOT_EVIDENCED -> {
                 boolean isResponsibility = req.type() == com.example.resumerag.model.RequirementType.EXPERIENCE
                         || req.type() == com.example.resumerag.model.RequirementType.OTHER;
+
+                /*
+                 * Guard: if the skill label is already present in the resume text,
+                 * the matching pipeline did not connect it but the candidate already
+                 * has it.  Do NOT recommend adding something already present.
+                 */
+                boolean alreadyInResume = !isResponsibility
+                        && snapshot != null
+                        && snapshot.fullText() != null
+                        && containsSkillLabel(snapshot.fullText(), originalLabel);
+
+                if (alreadyInResume) {
+                    yield location == null
+                        ? title("Highlight", titleLabel, "")
+                        + ": The resume already mentions " + originalLabel
+                        + ". Consider making it more prominent or adding context."
+                        : title("Highlight", titleLabel, "")
+                        + ": The resume already mentions " + originalLabel
+                        + " in the " + location
+                        + ". Consider making it more prominent or adding context.";
+                }
+
                 if (isResponsibility) {
                     yield location == null
                         ? title("Clarify", titleLabel, "")
@@ -286,5 +308,23 @@ public class JDTailoringService {
     }
 
     record Tips(List<String> tips) {
+    }
+
+    /**
+     * Check whether a skill label is explicitly present in resume text,
+     * using word-boundary matching to avoid false positives
+     * (e.g. "Java" must not match "JavaScript").
+     */
+    private static boolean containsSkillLabel(String resumeText, String skillLabel) {
+        if (resumeText == null || resumeText.isBlank()
+                || skillLabel == null || skillLabel.isBlank()) {
+            return false;
+        }
+        String escaped = java.util.regex.Pattern.quote(skillLabel.trim());
+        java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(
+                "(?<!\\p{Alnum})" + escaped + "(?!\\p{Alnum})",
+                java.util.regex.Pattern.CASE_INSENSITIVE
+        );
+        return pattern.matcher(resumeText).find();
     }
 }
